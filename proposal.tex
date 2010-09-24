@@ -1,0 +1,79 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{setspace}
+\usepackage{times}
+\usepackage{color}
+\usepackage[margin=1in]{geometry}
+
+%
+% This command highlights your original in red and my suggested
+% changes in green.
+%
+\newcommand{\cmt}[2]{{\color{red}#1} \emph{\color{green} #2}}
+
+% comment the other two definitions of cmt and uncomment below if you want to
+% see only my changes. 
+%\newcommand{\cmt}[2]{#2}
+
+% comment the other two definitions of cmt and uncomment below if you want to
+% see your original.
+%\newcommand{\cmt}[2]{#1}
+
+\begin{document}
+%opening
+\title{Senior Project Proposal - Distributed Hash Tables on Adhoc Networks}
+\author{Prasanna Gautam}
+
+\maketitle
+\setstretch{2}
+\section*{Introduction}
+In an age where decentralization and parallelization are the key, distributed hash tables (DHTs) \cmt{have had revolutionary effects}{have had a dramatic impact on the decentralization and scalability of peer-to-peer applications}. In essence, a DHT is a system designed to harness the storage and network resources of \cmt{large}{a large} number of computers by providing a hash-table interface \cmt{where the}{where} \emph{(key,value)} pairs are \cmt{stored}{distributed} across \cmt{various}{a large number of} nodes\cmt{ where}{---}\emph{keys} \cmt{are}{represent} hashe\cmt{s}{d} \cmt{of the objects}{objects} \cmt{or}{that map to} \emph{values} \cmt{stored in the system}{that we are interested in} \cite{Naor07novelarchitectures}. Some of the most common uses, apart from academic research projects have been in peer-to-peer file transfer protocols like Bittorrent's distributed tracker where \cmt{}{peer} nodes \cmt{can be}{are} distributed \cmt{anywhere in the internet}{across a network} and can \cmt{drop in and out of connection}{join or leave a group of connected peers at any given time}. More recently, projects like Cassandra\cmt{,}{ and} Bigtable have emerged to provide structured storage systems using DHTs \cite{Chang06bigtable:a}\cite{Lakshman_cassandra-a}. \cmt{A parallel in the}{At the hardware level,} wireless networks \cmt{of this type of}{provide a similar} communication \cmt{is mobile}{strategy known as mobile} ad-hoc networking (MANET) where the communicating \cmt{nodes}{mobile devices} do not rely on preexisting infrastructure\cmt{s}{} such as routers or access points \cmt{to communicate with each other}{for communication}. Instead, each node \cmt{routes by forwarding data}{is responsible for routing its data} to other nodes. My project aims to explore the use of DHTs on adhoc networks to answer questions about the practicality, reliability, integrity and consistency in such networks. \cmt{From experience I konw that}{My previous experience demonstrated} testing and measur\cmt{ing}{ement of} ad\cmt{}{-}hoc \cmt{}{networks} in the field is difficult at best \cmt{and in many cases impossible}\cmt{ so }{.  }I want to leverage \cmt{the }{pre-}existing network simulation frameworks like NS-2/NS-3, OPNET, GloMoSim, NetSim to accurately model DHTs on ad-hoc networks and \cmt{creating}{use this knowledge to build} my own simulation environment that will augment \cmt{the}{} existing simulation infrastructure\cmt{}{s} or if ne\cmt{eded}{cessary}\cmt{, be entirely new based}{ construct a new simulation environment from scratch based} on the requirements of the project.
+%% You probably want to talk about what those existing implementations are.  
+%% I know you are comparing it against the current POSIT infrastructure, but
+%% you should be a little more clear. Perhaps this is not important and you
+%% are simply investigating the practicality of DHTs on adhoc networks in
+%% a variety of circumstances.  In other words, you are looking to see if
+%% using DHTs on Adhoc networks are useful at all.
+
+\section*{Description}
+A DHT layer shields many difficult issues including fault-tolerance, \cmt{locating object}{object location}, scalability, availability, load balancing for \cmt{}{the} distributed application designer\cite{Saumitra04howto}. Existing algorithms like ``consistent hashing`` implemented in DHTs have been proven to be fault tolerant and able to adapt to changing network topologies by efficiently partitioning a keyspace among \cmt{}{a} distributed set of nodes \cmt{and}{to} provide an additional overlay network \cmt{which connects nodes such that the node responsible for any key can be efficiently located}{that connects nodes for efficient key lookup}\cite{consistentHashing}. Various options have been explored to implement DHTs in MANETs using a proximity-aware DHT \cmt{}{called} Pastry\cite{Rowstron01pastry:scalable} and \cmt{}{an} on-demand MANET routing protocol \cmt{}{named} DSR\cite{Johnson02dynamicsource}. Based on my experience working on the Random Walk Gossip algorithm implementation \cmt{on}{in} POSIT\cite{positRWG}, I have realized that testing mobile ad-hoc networks consistently in the field can be very challenging \cmt{without}{thus requiring} a detailed \cmt{test}{} simulation \cmt{}{framework} \cmt{to base it on}{for experimentation and measurement}. My goal is to design a simulator for experimenting with DHTs on Ad-hoc networks\cmt{,}{ and to} explor\cmt{ing}{e} \cmt{network}{DHT} topologies and \cmt{}{their impact on} power consumption \cmt{in the}{of the mobile} devices \cmt{communicating}{}. That said, I will be exploring and understanding various existing simulation frameworks to come up with a workable model to run my tests. The most important questions I aim to explore and answer are:
+\begin{itemize}
+ \item How power efficient can \cmt{}{a} DHT \cmt{}{be} on \cmt{}{an} Adhoc network \cmt{be}{}?
+ \item What kinds of \cmt{network}{DHT} topologies are preferrable?
+ \item What are the effects of \cmt{}{node ``churn''} \cmt{}{(i.e., the adding or removing of nodes on the network)}?
+ \item How \cmt{do you}{to} deal with network partition\cmt{}{ing}?
+\end{itemize}
+The simulator I want to work on would be written in clojure, a lisp dialect running on the \cmt{java}{} JVM. My main motivation is that given that I have a rather short time frame of a year to complete this project, I want to be able to test the various components of the applications as independent of each other as possible. Using a functional language makes it much easier to do as I can test individual functions separately. I can also use \cmt{various}{a variety of} existing Java and C libraries when \cmt{needed}{necessary} \cmt{and}{to} simulate code that's much closer to the actual system\cmt{'s}{} code \cmt{}{or when efficiency is an issue}. The architectures \cmt{I'll be looking}{of interest are} primarily \cmt{would be} Android phones\cmt{-}{,} the ADP1 and the Nexus one\cmt{}{,} and ad-hoc network implementations in Linux \cmt{in}{on} laptops. I'll run a battery drain test on my targets with various stress levels to get an idea of the network usage with respect to power for the phones and run the simulations around those parameters.
+The end result of this project would be a simulator that does the network simulation that lets us create DHTs on a \cmt{random}{large} number of \cmt{}{randomly generated} nodes, observe progress on each node and report and record the results. The variables that are relevant \cmt{are -}{include:} loss of data when a certain percentage of nodes drop, power consumption on average of each of the algorithms, throughput of the network, \cmt{}{and} availability of a key/value pair on a network over time. Along with this, I want to explore these conditions in various network topologies and network conditions.
+%% Ok.  At this point it seems clear that you have two foci:
+%%   1) Researching existing network simulation environments for adhoc networks
+%%      and possibly implementing your own.
+%%   2) Researching DHTs on Adhoc networks using your simulation
+%%      environment.
+
+%% Is this correct?  If so, I would restate your introduction to indicate that
+%% testing and measuring ad-hoc networks is difficult at best and that you aim
+%% to either (a) leverage an existing simulation framework to accurately model
+%% and evaluate a ad-hoc network based on the criteria you metion above, or
+%% (2) create your own simulation environment that will augment an existing
+%% simulation infrastructure or be entirely new.
+
+\section*{Timetable}
+\begin{itemize}
+ \item End of September - Finish research on frameworks, relevant papers, required devices, libraries
+ \item 15th October - Get data about the phones being tested
+ \item 22nd October - Finish preliminary architecture of the simulator
+ \item 29th October - Report on existing frameworks 
+ \item 12th November - Technical Paper Presentation
+ \item 7th December - Prototype of the simulator for implementing basic DHT network on simulated ad-hoc networks
+ \item 15th December - Project report and findings from the semester
+\end{itemize}
+
+\section*{Budget}
+I'll need two or more laptops/netbooks that I can create ad-hoc networks on and get real data that I need for the project. Also since adhoc networks on laptops is much better understood, that'd let me benchmark and test against existing ad-hoc network implementations. Since books on this topic are rather sparse in the library, I'd like to order a few books too. Most of the network simulators I've mentioned are either open source or free under academic license but getting software might be necessary.
+
+\section*{Conclusion}
+With this project I'm aiming to get a better understanding of the state of Distributed Hash Tables on Adhoc networks and test the practicality of those networks. I'll also learn about running network simulation and testing hypotheses about various DHTs on Adhoc network implementations with them. In the end, I want to have a working simulator to test and observe various network conditions by simulating real network hardware and conditions as well as possible.
+\bibliography{ref}{}
+\bibliographystyle{plain}
+\end{document}
