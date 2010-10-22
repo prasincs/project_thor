@@ -1,0 +1,54 @@
+\begin{thebibliography}{1}
+
+\bibitem{positRWG}
+M.~Asplund, T.~deLanerolle, C.~Fei, P.~Gautam, R.~Morelli, S.~Nadjm-Tehrani,
+  and G.~Nykvist.
+\newblock Wireless ad hoc dissemination for search and rescue.
+\newblock In {\em 7th International Conference on Information Systems for
+  Crisis Response and Management}. ISCRAM, May 2010.
+
+\bibitem{Chang06bigtable:a}
+Fay Chang, Jeffrey Dean, Sanjay Ghemawat, Wilson~C. Hsieh, Deborah~A. Wallach,
+  Mike Burrows, Tushar Chandra, Andrew Fikes, and Robert~E. Gruber.
+\newblock Bigtable: A distributed storage system for structured data.
+\newblock In {\em IN PROCEEDINGS OF THE 7TH CONFERENCE ON USENIX SYMPOSIUM ON
+  OPERATING SYSTEMS DESIGN AND IMPLEMENTATION - VOLUME 7}, pages 205--218,
+  2006.
+
+\bibitem{Johnson02dynamicsource}
+David~B. Johnson and David~A. Maltz.
+\newblock Dynamic source routing in ad hoc wireless networks.
+\newblock In {\em MOBILE COMPUTING}, pages 153--181. Kluwer Academic
+  Publishers, 2002.
+
+\bibitem{consistentHashing}
+David Karger, Eric Lehman, Tom Leighton, Rina Panigrahy, Matthew Levine, and
+  Daniel Lewin.
+\newblock Consistent hashing and random trees: distributed caching protocols
+  for relieving hot spots on the world wide web.
+\newblock In {\em STOC '97: Proceedings of the twenty-ninth annual ACM
+  symposium on Theory of computing}, pages 654--663, New York, NY, USA, 1997.
+  ACM.
+
+\bibitem{Lakshman_cassandra-a}
+Avinash Lakshman and Prashant Malik.
+\newblock Cassandra- a decentralized structured storage system.
+
+\bibitem{Naor07novelarchitectures}
+Moni Naor and Udi Wieder.
+\newblock Novel architectures for p2p applications: the continuous-discrete
+  approach.
+\newblock {\em ACM TRANSACTIONS ON ALGORITHMS}, 3(3):50--59, 2007.
+
+\bibitem{Rowstron01pastry:scalable}
+Antony Rowstron and Peter Druschel.
+\newblock Pastry: Scalable, distributed object location and routing for
+  large-scale peer-to-peer systems, 2001.
+
+\bibitem{Saumitra04howto}
+Himabindu~Pucha Saumitra, Saumitra~M. Das, and Y.~Charlie Hu.
+\newblock How to implement dhts in mobile ad hoc networks?
+\newblock In {\em Student poster, the 10th ACM International Conference on
+  Mobile Computing and Network (MobiCom 2004), September-October}, 2004.
+
+\end{thebibliography}
