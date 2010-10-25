@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.10.19)  22 OCT 2010 09:15
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.10.19)  22 OCT 2010 13:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -130,8 +130,8 @@ landscape: --
 twocolumn: --
 twoside: --
 asymmetric: --
-h-parts: 72.26999pt, 452.9679pt, 72.26999pt
-v-parts: 72.26999pt, 700.50687pt, 72.26999pt
+h-parts: 57.81621pt, 481.87546pt, 57.81621pt
+v-parts: 57.81621pt, 729.41443pt, 57.81621pt
 hmarginratio: --
 vmarginratio: --
 lines: --
@@ -145,11 +145,11 @@ driver: pdftex
 -------------------- Page layout dimensions and switches
 \paperwidth  597.50787pt
 \paperheight 845.04684pt
-\textwidth  452.9679pt
-\textheight 700.50687pt
-\oddsidemargin  0.0pt
-\evensidemargin 0.0pt
-\topmargin  -37.0pt
+\textwidth  481.87546pt
+\textheight 729.41443pt
+\oddsidemargin  -14.45378pt
+\evensidemargin -14.45378pt
+\topmargin  -51.45378pt
 \headheight 12.0pt
 \headsep    25.0pt
 \footskip   30.0pt
@@ -183,25 +183,25 @@ LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 39.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] (./proposal.bbl [3] [4
-]) [5] (./proposal.aux) ) 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] (./proposal.bbl [3]) [
+4] (./proposal.aux) ) 
 Here is how much of TeX's memory you used:
  1559 strings out of 495061
  22549 string characters out of 1182620
- 86142 words of memory out of 3000000
+ 86167 words of memory out of 3000000
  4739 multiletter control sequences out of 15000+50000
  14948 words of font info for 34 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 24i,6n,32p,2659b,209s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}
-</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/
-texmf-texlive/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-texlive
-/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type
-1/urw/times/utmb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmr8a.p
-fb></usr/share/texmf-texlive/fonts/type1/urw/times/utmri8a.pfb>
-Output written on proposal.pdf (5 pages, 81218 bytes).
+ 24i,6n,32p,2673b,211s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</us
+r/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texm
+f-texlive/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-texlive/fon
+ts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/ur
+w/times/utmb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmr8a.pfb><
+/usr/share/texmf-texlive/fonts/type1/urw/times/utmri8a.pfb>
+Output written on proposal.pdf (4 pages, 80682 bytes).
 PDF statistics:
- 43 PDF objects out of 1000 (max. 8388607)
+ 40 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
