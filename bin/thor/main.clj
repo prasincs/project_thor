@@ -3,12 +3,20 @@
   (:use thor.node thor.network)
   )
 
-  (defn -main [& args]
+(def node-list (create-node-list))
+
+(defn run-simulation []
     ( let [ node (create-node 1 "test")
             node-list (create-node-list)]
       (println (get-name node))
-      (cons (add-node node node-list) node-list)
+      
       )
-    (println "Hello World"))
+    
+  )
+  
+
+  (defn -main [& args]
+    (run-simulation)
+    )
   
 
