@@ -1,22 +1,28 @@
 (ns thor.main
   (:gen-class)
-  (:use thor.node thor.network)
+  (:use thor.node thor.network thor.ui.window)
+  (:import [java.util Random])
   )
 
 (def node-list (create-node-list))
 
 (defn run-simulation []
-    ( let [ node (create-node 1 "test")
-            node-list (create-node-list)]
-      (println (get-name node))
-      
-      )
-    
-  )
   
+  )
 
-  (defn -main [& args]
+(defn main []
+  (let [ random (Random. )]
+    (dotimes [_ 10]
+   (add-node (create-node _ "test" 
+               (struct-map pos :x (.nextInt random 500 ) :y (.nextInt random 500))) 
+     node-list)
+  )
+    (init-window @node-list)
     (run-simulation)
-    )
+    ))
+
+ (defn -main [& args]
+   (main)
+  )
   
 

@@ -7,29 +7,35 @@
 
 (def list-circles [ {:x 10 :y 10} {:x 40 :y 40} {:x 60 :y 60}])
 
-(defn draw-circles [g circles]
-  (doseq [ circle circles]
+
+  (defn draw-nodes [g nodes]
+  (doseq [ node nodes]
+    (def location (node :location))
     (.setColor g (Color. 0 0 0))
-    (.fillOval g (get circle :x) (get circle :y) 15 15)
+    (.fillOval g (get location :x) (get location :y) 15 15)
     )) 
  
-(defn create-canvas []
+(defn create-canvas [node-list]
   (proxy [JPanel] [] 
     (paintComponent [g]
       (proxy-super paintComponent g)
       (.setColor g (Color. 255 255 255))
       (.fillRect g 0 0 500 500)
-      (draw-circles g list-circles))
+      (draw-nodes g node-list))
     (getPreferredSize [] (Dimension. 500 500))))
 
-(let [frame (JFrame. "Project Thor")
-     canvas (create-canvas)]
- (doto frame 
+
+(def window (JFrame. "Project Thor"))
+ 
+
+(defn init-window [ node-list ]
+  (let [canvas (create-canvas node-list)]
+ (doto window 
    ;(.setLayout (GridLayout. 2 2 3 3))
    (.add canvas)
    (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
    .pack
-   (.setVisible true)))
+   (.setVisible true))))
 
  ;(.. frame getContentPane (add button))
 

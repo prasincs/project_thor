@@ -7,10 +7,10 @@
     :location  ; x y coordinate in graph pos type
     )
   
-  (defn create-node [id nodename]
+  (defn create-node [id nodename pos]
     (struct-map node :id id 
      :name nodename
-     :location (struct-map pos 1 1)
+     :location pos
      )
   )
   

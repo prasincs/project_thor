@@ -3,10 +3,8 @@
   ))
 
 
-(defn create-node-list [] (list []))
+(defn create-node-list [] (ref ()))
 
-(defn add-node [& node-list ] 
-  (dosync 
-    (alter node-list     
-      (vec (apply map + node-list)))))
+(defn add-node [n node-list] 
+  (dosync (alter node-list conj n)))
 
