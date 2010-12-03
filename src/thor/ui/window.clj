@@ -5,9 +5,6 @@
   '(java.awt Color Dimension GridLayout))          
 
 
-(def list-circles [ {:x 10 :y 10} {:x 40 :y 40} {:x 60 :y 60}])
-
-
   (defn draw-nodes [g nodes]
   (doseq [ node nodes]
     (def location (node :location))

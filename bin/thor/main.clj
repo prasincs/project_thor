@@ -13,9 +13,7 @@
 (defn main []
   (let [ random (Random. )]
     (dotimes [_ 10]
-   (add-node (create-node _ "test" 
-               (struct-map pos :x (.nextInt random 500 ) :y (.nextInt random 500))) 
-     node-list)
+   (add-node (create-random-node 500 500) node-list)
   )
     (init-window @node-list)
     (run-simulation)
