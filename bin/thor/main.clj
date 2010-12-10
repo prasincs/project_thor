@@ -1,26 +1,53 @@
 (ns thor.main
   (:gen-class)
-  (:use thor.node thor.network thor.ui.window)
-  (:import [java.util Random])
+  (:use thor.ui.animation thor.utils)
+  (:import [javax.swing JFrame JLabel JTextField JButton]
+        [java.awt.event ActionListener]
+        [java.awt GridLayout])
   )
 
-(def node-list (create-node-list))
-
-(defn run-simulation []
-  
-  )
 
 (defn main []
-  (let [ random (Random. )]
-    (dotimes [_ 10]
-   (add-node (create-random-node 500 500) node-list)
-  )
-    (init-window @node-list)
-    (run-simulation)
-    ))
+ 
+(let [frame (JFrame. "Project Thor")
+      nodenum-label (JLabel. "Number of nodes")
+      nodenum-text (JTextField. "20" )
+      minRange-text (JTextField. "10")
+      minRange-label (JLabel. "Minimum Range")
+      maxRange-label (JLabel. "Maximum Range")
+      maxRange-text (JTextField. "20")
+      duration-label (JLabel. "Duration")
+      duration-text (JTextField. "10")
+      simulate-button (JButton. "Simulate")]
+    (. simulate-button
+        (addActionListener
+           (proxy [ActionListener] []
+                (actionPerformed [evt]
+                    (animation "thor"                       
+                        (extract-integer nodenum-text)
+                        (extract-double minRange-text)  
+                        (extract-double maxRange-text)
+                        (extract-double duration-text)
+                      )
+                    
+                  ))))
+    (doto frame 
+                (.setDefaultCloseOperation (JFrame/EXIT_ON_CLOSE))
+                (.setLayout (GridLayout. 5 2))
+                (.add nodenum-label)
+                (.add nodenum-text)
+                (.add minRange-label)
+                (.add minRange-text)
+                (.add maxRange-label)
+                (.add maxRange-text)
+                (.add duration-label)
+                (.add duration-text)
+                (.add simulate-button)
+                (.pack)
+                (.setVisible true))))
+
 
  (defn -main [& args]
    (main)
   )
   
-
