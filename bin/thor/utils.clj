@@ -1,5 +1,6 @@
-(ns thor.utils)
-
+(ns thor.utils
+  )
+(use '[clojure.contrib.string :only (join)])
 (defmacro extract-double [textbox]
   `(Double/parseDouble 
                         (.getText ~textbox)))
@@ -14,3 +15,11 @@
                        (actionPerformed [evt#]
                         ~@body
                          )))))
+
+(defn write-lines2 [file-name lines]
+  (with-open [wtr (java.io.BufferedWriter. (java.io.FileWriter. file-name))]
+    (doseq [line lines] (.write	wtr line))))
+
+(defn keys-from-fields [fields]
+  
+  (read-string (str "(" (join " " (map #(str ":" %) fields)) ")")))

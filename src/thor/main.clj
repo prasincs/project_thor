@@ -19,18 +19,13 @@
       duration-label (JLabel. "Duration")
       duration-text (JTextField. "10")
       simulate-button (JButton. "Simulate")]
-    (. simulate-button
-        (addActionListener
-           (proxy [ActionListener] []
-                (actionPerformed [evt]
+    (onclick simulate-button
                     (animation "thor"                       
                         (extract-integer nodenum-text)
                         (extract-double minRange-text)  
                         (extract-double maxRange-text)
-                        (extract-double duration-text)
                       )
-                    
-                  ))))
+                  )
     (doto frame 
                 (.setDefaultCloseOperation (JFrame/EXIT_ON_CLOSE))
                 (.setLayout (GridLayout. 5 2))
@@ -40,8 +35,8 @@
                 (.add minRange-text)
                 (.add maxRange-label)
                 (.add maxRange-text)
-                (.add duration-label)
-                (.add duration-text)
+                ;(.add duration-label)
+                ;(.add duration-text)
                 (.add simulate-button)
                 (.pack)
                 (.setVisible true))))

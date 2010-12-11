@@ -1,35 +1,37 @@
 (ns thor.ui.animation
   (:gen-class)
    (:import [java.util Random] [java.awt.event MouseEvent ActionListener ]
-     [javax.swing JFrame JButton BoxLayout JPanel JSlider] 
+     [javax.swing JFrame JButton BoxLayout JPanel JSlider JFileChooser] 
      [java.awt Dimension GridBagLayout FlowLayout BorderLayout]
      [javax.swing.event ChangeListener]
+     [java.io BufferedWriter FileWriter]
      )
    (:use thor.utils)
     )
-(use '(incanter core processing ))
+(use '[incanter core processing io ] 
+ '[clojure.contrib.duck-streams :only (reader writer)]
+ '[clojure.contrib.string :only (join split)])
  
-;(def e (ref ())) 
-(defn animation [title nodenum minRange maxRange duration]
+
+(defn animation [title nodenum minRange maxRange]
 (let [frame (JFrame. title)
       buttons-panel (JPanel.)
       start-button (JButton. "Start")
       stop-button (JButton. "Stop")
+      save-button (JButton. "Save")
+      load-button (JButton. "Load")
       fps (JSlider. JSlider/HORIZONTAL 1 100 15)
       nodes nodenum
       maxSize maxRange
-      e (ref ())
+      all-nodes (ref ())
       dragging (ref false)
       mouse-pos (ref {:x :y})
       width 600
       height 600
       minSize minRange
       current-framerate (ref 15)
-      ; float array to store circle properties?
-      ds 2
-      sel 0
-      ;selected node switch
       random (Random.)
+      loading (ref false)
       fnt (ref nil)
       running (ref false)
       current-time (ref 0)
@@ -45,7 +47,7 @@
               (stroke-weight 1)
             )
            (dotimes [_ nodes] 
-             (dosync (alter e conj
+             (dosync (alter all-nodes conj
                        ; add a reference of the map
                        (ref 
                          {:x (.nextInt random width)
@@ -75,9 +77,9 @@
                 )
             
           
-                      
+             (if (not @loading)         
              (dosync
-                (doseq [n @e] 
+                (doseq [n @all-nodes] 
                    (let [radi (:radius @n)
                          diam (* 2 radi)]
                       (if (:selected @n)
@@ -115,7 +117,8 @@
                           (alter n #(assoc % :y (- 0 diam))))
                         
                        )
-                     (doseq [n2 @e]
+                     (doseq [n2 @all-nodes]
+                       ;if a node is close to this node, draw a line between the centers
                        (if (< (dist (:x @n) (:y @n) (:x @n2) (:y @n2)) radi) 
                          (doto this
                            (stroke 10)
@@ -128,13 +131,14 @@
               )
             
           )
+             )
           (mouseMoved [mouse-event]
             (dosync
               (alter mouse-pos #(assoc % :x (mouse-x mouse-event)))
               (alter mouse-pos #(assoc % :y (mouse-y mouse-event)))
 
               ; loop through all the nodes
-              (doseq [n @e]
+              (doseq [n @all-nodes]
                 
                  (let [radi (:radius @n)
                          diam (* 0.5 radi) ; not diameter, tweaking values
@@ -166,12 +170,13 @@
             (ref-set dragging false)))
           
           
-  )
+  ) ;sktch
   
   ]
  ; (view sktch :size [width height])
  (doto buttons-panel
-   
+   (.add save-button)
+   (.add load-button)
    (.add start-button)
    (.add stop-button)
    (.add fps)
@@ -191,22 +196,61 @@
  (.init sktch)
  
 (onclick start-button
-                         (dosync
-                         (ref-set running true)))
+     (dosync
+     (ref-set running true)))
 (onclick stop-button
-                         (dosync
-                         (ref-set running false)))
+     (dosync
+     (ref-set running false)))
+
+(onclick save-button
+  
+  ( let [fc (JFileChooser.)]
+   (if (= (.showSaveDialog fc frame) JFileChooser/APPROVE_OPTION)
+     (let [file-name (.getAbsolutePath (.getSelectedFile fc))]
+       (with-open [wtr (BufferedWriter. (FileWriter. file-name))]
+         (.write wtr (join "," ["x"  "y"  "radius" "x-speed" "y-speed" "selected"]))
+         (.write wtr "\n")
+         (doseq [n @all-nodes]
+           (.write wtr (join "," (vals @n)))
+           (.write wtr "\n"))     
+   )))))
+
+
+(onclick load-button 
+  (let [fc (JFileChooser.)]
+    (if (= (.showOpenDialog fc frame) JFileChooser/APPROVE_OPTION)
+      (dosync 
+        (ref-set loading true)
+        (ref-set all-nodes ())
+      (let [file-name (.getAbsolutePath (.getSelectedFile fc))]
+      (with-open [rdr (reader  file-name)]
+        (let [fields (split #"," (first (line-seq rdr)))
+              ks (keys-from-fields fields)]
+          ;(println ks)
+          (doseq [line (rest (line-seq rdr))]
+            ;(println (split #"," line))
+            ;(println (zipmap (keys-from-fields fields) (split #"," line)))
+            (alter all-nodes conj  
+              (ref  
+                (zipmap ks 
+                  ; take each string and evaluate it to get the values
+                  (map #(read-string %) (split #"," line)))))
+          ))
+      (ref-set loading false)
+      ))
+      ))))
+
+; if the frames per second slider is changed, change the animation too
 (doto fps
   (.addChangeListener (proxy [ChangeListener][]
-                          (stateChanged [evt]
-                            
+                          (stateChanged [evt]   
   (dosync 
     (ref-set current-framerate (.getValue (.getSource evt)))
     (framerate sktch @current-framerate)))))) 
 ))
 
 (defn start-animation []
-   (animation "test" 100 20 100 1)  )
+   (animation "test" 100 20 100)  )
 
   
 
