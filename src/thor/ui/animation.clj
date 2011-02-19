@@ -50,12 +50,14 @@
              (dosync (alter all-nodes conj
                        ; add a reference of the map
                        (ref 
-                         {:x (.nextInt random width)
+                         {:id _ ; set the id
+                          :x (.nextInt random width)
                         :y (.nextInt random height)
                         :radius (+ minSize (.nextInt random (- maxSize minSize)))
                         :x-speed (+ 0.5 (.nextFloat random))
                         :y-speed (+ 0.5 (.nextFloat random))
                         :selected false
+                        :connected []
                         }
                          )))
              )
@@ -119,11 +121,21 @@
                        )
                      (doseq [n2 @all-nodes]
                        ;if a node is close to this node, draw a line between the centers
-                       (if (< (dist (:x @n) (:y @n) (:x @n2) (:y @n2)) radi) 
+                       (if (and (< (dist (:x @n) (:y @n) (:x @n2) (:y @n2)) radi) 
+                             (not (= @n @n2))) 
                          (doto this
                            (stroke 10)
-                           (line (:x @n) (:y @n) (:x @n2) (:y @n2)))
-                         ))
+                           (line (:x @n) (:y @n) (:x @n2) (:y @n2))
+                           (println (format "%d connected with %d" (:id @n) (:id @n2)))
+                           )
+                           
+                         ;else condition
+                         (comment
+                           
+                           
+                           )
+                         );if
+                       )
                   ))
                 ;increment time counter
                 (when @running

@@ -12,10 +12,10 @@
 (let [frame (JFrame. "Project Thor")
       nodenum-label (JLabel. "Number of nodes")
       nodenum-text (JTextField. "20" )
-      minRange-text (JTextField. "10")
+      minRange-text (JTextField. "50")
       minRange-label (JLabel. "Minimum Range")
       maxRange-label (JLabel. "Maximum Range")
-      maxRange-text (JTextField. "20")
+      maxRange-text (JTextField. "100")
       duration-label (JLabel. "Duration")
       duration-text (JTextField. "10")
       simulate-button (JButton. "Simulate")]

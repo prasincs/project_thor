@@ -1,1 +1,10 @@
-classes/*
+.DS_Store
+*.swp
+*.swo
+build
+classes
+*.jar
+*~
+lib
+bin
+\#*#

@@ -5,17 +5,37 @@
   )
 
   (defstruct pos :x :y )
-  (defstruct node 
-    :id 
-    :name 
-    :location  ; x y coordinate in graph pos type
+  (defstruct mem :total :free)
+  (defstruct data :size :content)
+
+  (defn create-data [size content]
+    (struct-map data :size size :content content))
+
+  (defn create-memory [size] 
+    (struct-map mem :total size :free size))
+
+
+  (defrecord Node 
+    [id 
+     name
+     memory
+     location  ; x y coordinate in graph pos type
+     speed
+     direction
+     power]
     )
   
-  (defn create-node "create a node based on given info" [id nodename pos]
-    (struct-map node :id id 
-     :name nodename
-     :location pos
-     )
+   (defn create-node "create a node based on given info"
+     [id name pos memory-size]
+    (Node.  
+      id 
+      name 
+      (create-memory memory-size)
+      pos 
+      0
+      0
+      0
+      )
   )
 
 (defn position [x y] 
@@ -31,7 +51,7 @@
 (defn create-random-node [max-width max-height]
   (let [ random (Random.)]
   (def node-num (.nextInt random (* max-width max-height)))
-  (create-node   node-num (format "random node %d" node-num) (random-position max-width max-height))))
+  (create-node   node-num (format "random node %d" node-num) (random-position max-width max-height) 100)))
 
 ; TODO: move to math or utils
 (defn square [x] (* x x))
@@ -41,16 +61,16 @@
   (n :location))
 
 
-; TODO: make multimethod
-  (defn get-distance [node1 node2]
-    (let [loc1 (get-location node1)
-          loc2 (get-location node2)]
-          (Math/sqrt (+ (square (Math/abs (- (loc1 :x) (loc2 :x))))
-                       (square (Math/abs (- ( loc1 :y) (loc2 :y))))
-                       )  
-          )))
-      
-  
-  (defn get-name [node] (node :name))
-  
+(defn get-distance [n1 n2 ]
+  (defn squared [x] (* x x))
+  (Math/sqrt
+      (+
+      (squared ( - (-> n2 :location :x) (-> n1 :location :x)))
+      (squared ( - (-> n2 :location :y) (-> n1 :location :y))))))
 
+
+
+(defn create-random-node-list [nlist num width height]
+  (dotimes [_ num] (swap! nlist concat (create-random-node width height))))
+
+  ;(defn get-name [node] (node :name))

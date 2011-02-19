@@ -21,5 +21,8 @@
     (doseq [line lines] (.write	wtr line))))
 
 (defn keys-from-fields [fields]
-  
   (read-string (str "(" (join " " (map #(str ":" %) fields)) ")")))
+
+; probably should make it lazier
+(defmacro in-seq? "check if an item is in the sequence" [item & sq]
+`(= (some #{~item} ~@sq) ~item) )
