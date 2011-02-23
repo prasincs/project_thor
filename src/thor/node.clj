@@ -22,7 +22,8 @@
      location  ; x y coordinate in graph pos type
      speed
      direction
-     power]
+     power
+     range]
     )
   
    (defn create-node "create a node based on given info"
@@ -35,6 +36,7 @@
       0
       0
       0
+      10
       )
   )
 
@@ -71,6 +73,6 @@
 
 
 (defn create-random-node-list [nlist num width height]
-  (dotimes [_ num] (swap! nlist concat (create-random-node width height))))
+  (dotimes [_ num] (swap! nlist concat (list (create-random-node width height)))))
 
   ;(defn get-name [node] (node :name))
