@@ -1,33 +1,18 @@
 (ns thor.queue)
-(import '(java.util PriorityQueue Comparator Random))
+
 (defstruct event :task :time )
-(def random (Random.))
+
+
 (defn create-event [t task] { :time t
                               :task task
                                  })
 
-(defn make-comparator [compare-fn] 
-  (proxy [Comparator] []
-    (compare [left right] (compare-fn left right))))
+(defn create-queue [] (atom ()))
 
-(defn create-queue []
-  (PriorityQueue. 10 
-    (make-comparator #(. (%1 :time)  compareTo (%2 :time)) 
-      )))
+(def *queue* (atom ()))
 
-(defn add-to-queue [queue elem] 
-(.add queue elem))
+(defn add-events-to-queue [e] 
+  (swap! *queue* concat e)
+  (reset! *queue* (sort-by  :time @*queue*))
+  )
 
-(defn get-next-event [q] 
-  (.poll q))
-
-
-
-;(let [q (create-queue)]
-;  (dotimes [_ 10]
-;  (add-to-queue q (create-event "a" (.nextInt random 100 )))
-;  )
-;  ;(add-to-queue q (create-event "k" 1))
-;  (dotimes [_ 10]
-;    (println ((get-next-event q) :time))
-;  ))
