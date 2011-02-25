@@ -1,11 +1,10 @@
 (ns thor.queue)
 (import '(java.util PriorityQueue Comparator Random))
-(defstruct event :message :time )
+(defstruct event :task :time )
 (def random (Random.))
-(defn create-event [message t] (struct-map event 
-                                 :message message
-                                 :time t
-                                 ))
+(defn create-event [t task] { :time t
+                              :task task
+                                 })
 
 (defn make-comparator [compare-fn] 
   (proxy [Comparator] []
