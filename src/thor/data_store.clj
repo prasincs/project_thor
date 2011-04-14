@@ -12,7 +12,7 @@
 
 
 (defn add-node-to-data-item [item & nodes]
-  (reset! (:nodes item) (set concat ( (set nodes)) )
+  (swap! (:nodes item) (set concat ( (set nodes)) )
 
 (defn init-data-item [k v & nodes] 
   (let [ item (struct-map data-item :key k :value v :nodes (atom ()) )]
