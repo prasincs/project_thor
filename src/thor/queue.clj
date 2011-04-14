@@ -40,3 +40,11 @@
   (reset! *queue* (rest @*queue*))
   e))
 
+(defn get-next-event []
+  (first *queue*)
+  (swap! *queue* rest ))
+
+
+(defn noevents? [] (= true (empty? @*queue*)))
+
+

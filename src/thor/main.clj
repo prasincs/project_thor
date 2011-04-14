@@ -3,12 +3,30 @@
   (:use thor.window thor.lang thor.queue)
 )
 
+;(defn put-items[] 
+;    (dotimes [_ 10]
+;      (add-events-to-queue *queue* (create-event (format "event %d" _) (.nextInt random 10))
+;        ))
+;    (.size *queue*)
+;    )
+;
 
 
+(defn main-prog [] 
+  (binding [*queue* (create-queue)]
+    (dotimes [_ 10]
+      (add-events-to-queue *queue* (create-event (format "event %d" _) (.nextInt random 10))
+                           ))
 
+    (loop [event (get-next-event)]
+      (eval (:task event))     
+      (if (noevents?) 
+        (recur (event (get-next-event))))
+      )))
 
 
  (defn -main [& args]
-   (thor.window/main)
-  )
+ ;  (thor.window/main)
+  (main-prog)
+   )
   
