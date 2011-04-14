@@ -6,6 +6,7 @@
 
 ; 
 (def INFINITY (Integer/MAX_VALUE))
+(def *data-store* (atom {}))
 
 (defstruct pos :x :y )
 (defstruct mem :total :free)
@@ -87,6 +88,10 @@
     {:node @closest-node :distance @dist}
     ))
   
+; store data in the data store 
+; data is just key/value
+(defn store [nlist node & datas]
+  )
 
 
 (defn create-random-node-list [nlist num width height]
