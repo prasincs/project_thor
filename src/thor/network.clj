@@ -29,6 +29,22 @@
     ))
 
 
+(defn find-closest-node [node node-list & args]
+  (let [dist (atom 0)
+        ret-node (atom {})]
+  (doseq [n @node-list]
+    (let [cur-dist (find-distance node n) ]
+    (if (< cur-dist dist)
+      (reset! dist  cur-dist)
+      (reset! ret-node n )
+      )
+    ))
+    @ret-node
+    ))
+
+
+
+
 (defn find-neighbors [node node-list]
   (let [neighbors (atom ())]
   (doseq [n @node-list]
@@ -43,5 +59,6 @@
 
 (defn add-node [n node-list] 
   (dosync (alter node-list conj n)))
+
 
 

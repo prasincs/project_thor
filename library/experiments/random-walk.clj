@@ -1,6 +1,7 @@
 
 (defduration 100)
 
+
 (defexpt  random-walk 
          {
           :title "Random Walk"
@@ -12,7 +13,8 @@
           :speed 'random
           :global-payload (defdata 1 K) ;1 KB of data
           :global-actions [ (every 10 'find-neighbors)
-                           ;(on-new-neighbor 'send-payload)
+                           (on-new-neighbor 'send-payload)
+                          
                           ]
 
           })
