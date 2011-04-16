@@ -6,8 +6,6 @@
 
 ; 
 (def INFINITY (Integer/MAX_VALUE))
-(def *data-store* (atom {}))
-
 (defstruct pos :x :y )
 (defstruct mem :total :free)
 (defstruct data :size :content)
@@ -27,6 +25,7 @@
    power
    range
    ]
+
   )
 
 (defn create-node "create a node based on given info"
@@ -91,8 +90,13 @@
 ; store data in the data store 
 ; data is just key/value
 (defn store [nlist node & datas]
+
   )
 
+
+(defn create-nodes-in-circle [nlist num width height]
+  
+  )
 
 (defn create-random-node-list [nlist num width height]
   (dotimes [_ num] (swap! nlist concat (list (create-random-node width height)))))

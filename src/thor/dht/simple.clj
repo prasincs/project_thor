@@ -14,12 +14,20 @@
 ; or the topology in this case, it will be a ring of nodes 
 (def *overlay* (atom ()))
 (def *nodelist* (atom ()))
+(def *data-store* (init-data-store))
+
+
 ; create an overlay network of some size
 (defn create-overlay [size & nodes]
-  (if (empty? nodes) 
+  ; make overlay empty -- might need to change this logic
+  (if (-> *overlay* empty? not) 
+    (reset! *overlay* ()))
 
-    ; assume the arena is of size size*size
-    (create-random-node-list *nodelist* size size size)
+  (if (empty? nodes) 
+    (do
+
+      )
+    ;else
     )
   )
 
