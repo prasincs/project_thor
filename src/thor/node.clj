@@ -105,7 +105,7 @@
 ; creates nodes in a circle
 ; given width and height, returns nodes around
 (defn create-nodes-in-circle [num width height]
-  (let [center {:x (/ width 2) :y (/ height 2)}
+  (let [center (position (/ width 2) (/ height 2))
         radius (get-distance-locations 
                  center 
                  (position width (/ height 2)) )  

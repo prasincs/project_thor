@@ -22,10 +22,10 @@
   ; make overlay empty -- might need to change this logic
   (if (-> *overlay* empty? not) 
     (reset! *overlay* ()))
-
+    
   (if (empty? nodes) 
     (do
-        (create-random-node-list *nodelist* NUM_NODES size size)
+      (create-random-node-list *nodelist* NUM_NODES size size)
       )
     ;else
     (do
@@ -36,7 +36,19 @@
     )
   ; regardless, we should have *nodeslist* full
   ; to make a circular linked-list now
-  
+  (let [f (first @*nodeslist*)
+        l (last @*nodeslist*)]
+    ; loop through first to next to last node 
+    (dotimes [i ( - (count @*nodeslist*) 1)]
+      (swap! *overlay* concat 
+             (list {:node (ref n) 
+                    :next (ref (nth @*nodeslist* (+ i 1)))}
+                   )))
+    ; make it so that the first one is the next of the last one
+    (swap! *overlay* concat 
+           (list {:node (ref l)
+                  :next (ref f)}))
+    )
   )
 
 (defn closest-node [node successor hash-key]
