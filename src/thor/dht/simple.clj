@@ -1,5 +1,6 @@
 (ns thor.dht.simple 
-  (require thor.node))
+  (:use thor.node thor.data-store)
+  )
 (use '[clojure.contrib.math :only (expt)])
 
 ; A simple DHT implmentation based on circular linked list
@@ -20,29 +21,26 @@
 ; create an overlay network of some size
 (defn create-overlay [size & nodes]
   ; make overlay empty -- might need to change this logic
-  (if (-> *overlay* empty? not) 
+  (if (-> @*overlay* empty? not) 
     (reset! *overlay* ()))
-    
+
   (if (empty? nodes) 
     (do
-      (create-random-node-list *nodelist* NUM_NODES size size)
-      )
+      (create-random-node-list *nodelist* NUM_NODES size size))
     ;else
     (do
       ; needs testing
-      (reset! *nodeslist*  nodes )
-
-      )
+      (reset! *nodelist*  nodes ))
     )
   ; regardless, we should have *nodeslist* full
   ; to make a circular linked-list now
-  (let [f (first @*nodeslist*)
-        l (last @*nodeslist*)]
+  (let [f (first @*nodelist*)
+        l (last @*nodelist*)]
     ; loop through first to next to last node 
-    (dotimes [i ( - (count @*nodeslist*) 1)]
+    (dotimes [i ( - (count @*nodelist*) 1)]
       (swap! *overlay* concat 
-             (list {:node (ref n) 
-                    :next (ref (nth @*nodeslist* (+ i 1)))}
+             (list {:node (ref (nth @*nodelist* i))
+                    :next (ref (nth @*nodelist* (+ i 1)))}
                    )))
     ; make it so that the first one is the next of the last one
     (swap! *overlay* concat 
