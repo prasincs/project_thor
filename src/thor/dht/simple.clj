@@ -9,7 +9,7 @@
 ; KEY_SIZE defines the maximum number of keys possible in the system
 ; 2**KEY_SIZE will the the size
 (def KEY_SIZE 10)
-
+(def NUM_NODES 10)
 ; you want some sort of network overlay to talk about the network
 ; or the topology in this case, it will be a ring of nodes 
 (def *overlay* (atom ()))
@@ -25,10 +25,18 @@
 
   (if (empty? nodes) 
     (do
-
+        (create-random-node-list *nodelist* NUM_NODES size size)
       )
     ;else
+    (do
+      ; needs testing
+      (reset! *nodeslist*  nodes )
+
+      )
     )
+  ; regardless, we should have *nodeslist* full
+  ; to make a circular linked-list now
+  
   )
 
 (defn closest-node [node successor hash-key]

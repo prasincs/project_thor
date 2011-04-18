@@ -46,7 +46,7 @@
   )
 
 (defn position [x y] 
-  (struct-map pos x y))
+  (struct-map pos :x x :y y))
 
 (defn random-position [max-width max-height]
   (let [random (Random.) ] 
@@ -65,7 +65,16 @@
 (defn get-location [n]
   (n :location))
 
+(defn get-distance-locations [loc1 loc2]
+  (defn squared [x] (* x x))
+  (Math/sqrt 
+    (+
+  (squared (- (loc2 :x) (loc1 :x)))
+  (squared (- (loc2 :y) (loc1 :y)))
+  )))
 
+; need a place to refer back for use of -> macro
+; so not refactoring this yet
 (defn get-distance [n1 n2 ]
   (defn squared [x] (* x x))
   (Math/sqrt
@@ -93,12 +102,38 @@
 
   )
 
-
-(defn create-nodes-in-circle [nlist num width height]
-  
-  )
+; creates nodes in a circle
+; given width and height, returns nodes around
+(defn create-nodes-in-circle [num width height]
+  (let [center {:x (/ width 2) :y (/ height 2)}
+        radius (get-distance-locations 
+                 center 
+                 (position width (/ height 2)) )  
+        angle (/ (* 2 Math/PI) num)
+        nlist (atom ())
+        ]
+    (dotimes [n num]
+      (swap! nlist 
+             concat 
+             (list
+               (create-node 
+                 n
+                 (position  
+                   (+ (:x center)
+                      (* (Math/cos 
+                           (* angle n) ) radius)) 
+                   (+ (:y center)
+                      (* (Math/sin 
+                           (* angle n) ) radius))
+                   ) 
+                 1000
+                 ))))
+    @nlist))
 
 (defn create-random-node-list [nlist num width height]
-  (dotimes [_ num] (swap! nlist concat (list (create-random-node width height)))))
+  (dotimes [_ num] 
+    (swap! nlist 
+           concat 
+           (list (create-random-node width height)))))
 
 ;(defn get-name [node] (node :name))
