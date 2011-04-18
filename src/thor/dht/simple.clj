@@ -26,7 +26,7 @@
 
   (if (empty? nodes) 
     (do
-      (create-seq-random-node-list *nodelist* NUM_NODES size size))
+      (reset! *nodelist* (create-seq-random-node-list NUM_NODES size size)))
     ;else
     (do
       ; needs testing

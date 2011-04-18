@@ -142,24 +142,31 @@
            (list (create-random-node width height)))))
 
 ; same thing as random-node list but nodes have a sequence
-(defn create-seq-random-node-list [nlist num width height &[id-range] ]
+(defn create-seq-random-node-list [num width height &[id-range] ]
   ; if an ID range is given, create nodes with ID in the range
-  (if (nil? id-range)
-    (dotimes [n num] 
-      (swap! nlist 
-             concat 
-             (list (create-random-node width height { :id n }))))
+  (let [nlist (atom ())]
+    (if (nil? id-range)
+      (dotimes [n num] 
+        (swap! nlist 
+               concat 
+               (list (create-random-node width height { :id n }))))
 
-    ; else
-    (do
-      ; check if the range has the keys we want
-      (if (= (keys id-range) '(:start :end))
-        (let [step (int (/ (Math/abs (- (:end id-range) (:start id-range))) num))]
-        
-     )
+      ; else
+      (do
+        ; check if the range has the keys we want
+        (if (= (keys id-range) '(:start :end))
+          (let [step (int (/ (Math/abs (- (:end id-range) (:start id-range))) num))]
+            (loop [id (:start id-range)]
+              (swap! nlist 
+                     concat 
+                     (list (create-random-node width height { :id id })))
+              (when (< id (:end id-range))
+                (recur (+ id step)))))
 
-    )
+          (throw (Error. "Range not of proper type => should be {:start <start-value> :end <end-value>"))
+          )
 
 
-  )))
-;(defn get-name [node] (node :name))
+        ))
+    @nlist
+    ))
