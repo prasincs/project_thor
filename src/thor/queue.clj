@@ -47,6 +47,6 @@
 
 ; returns true  if there are events 
 (defn has-events? [] (= false (empty? @*queue*)))
-(defn no-events? [] (not (hasevents?)))
+(defn no-events? [] (not (has-events?)))
 
 

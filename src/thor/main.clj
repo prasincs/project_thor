@@ -15,12 +15,12 @@
 (defn main-prog [] 
   (binding [*queue* (create-queue)]
     (dotimes [_ 10]
-      (add-events-to-queue *queue* (create-event (format "event %d" _) (.nextInt random 10))
+      (add-events-to-queue *queue* (create-event (format "event %d" _) (-> 10 rand int))
                            ))
 
     (loop [event (get-next-event)]
       (eval (:task event))     
-      (if (noevents?) 
+      (if (no-events?) 
         (recur (event (get-next-event))))
       )))
 
