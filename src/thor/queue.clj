@@ -22,8 +22,9 @@
 
 (defn add-random-event [i s] 
   (add-events-to-queue 
-    (create-event (int (rand s)) (read-string (format "(println %s)" i)))
-  ))
+    (create-event (int (rand s)) 
+                  (read-string (format "(println %s)" i)))
+    ))
 
 
 
@@ -44,7 +45,8 @@
   (first *queue*)
   (swap! *queue* rest ))
 
-
-(defn noevents? [] (= true (empty? @*queue*)))
+; returns true  if there are events 
+(defn has-events? [] (= false (empty? @*queue*)))
+(defn no-events? [] (not (hasevents?)))
 
 
