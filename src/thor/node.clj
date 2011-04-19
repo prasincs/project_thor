@@ -41,9 +41,6 @@
     )
   )
 
-(defn store [node payload]
-  
-  )
 
 (defn position [x y] 
   (struct-map pos :x x :y y))
@@ -101,11 +98,7 @@
     {:node @closest-node :distance @dist}
     ))
   
-; store data in the data store 
-; data is just key/value
-(defn store [nlist node & datas]
 
-  )
 
 ; creates nodes in a circle
 ; given width and height, returns nodes around

@@ -23,7 +23,7 @@
 
 
 ; create an overlay network of some size
-(defn create-overlay [size & nodes]
+(defn create-overlay [{:keys [num size nodes]  :or {num 10 size 100 nodes '() }}]
   ; make overlay empty -- might need to change this logic
   (if (-> @*overlay* empty? not) 
     (reset! *overlay* {}))
@@ -32,7 +32,7 @@
     (do
       ; create nodes with ids from 0 to 2**KEY_SIZE
       (reset! *nodelist* (create-seq-random-node-list 
-                           NUM_NODES size size {:start 0 :end (expt 2 KEY_SIZE)} )))
+                           num size size {:start 0 :end (expt 2 KEY_SIZE)} )))
     ;else
     (do
       ; needs testing
@@ -85,6 +85,6 @@
   )
 
 (defn lookup [start-node-id k]
-  
+  (get (get-data-in-node (find-node start-node-id k)) :value)
   )
 
