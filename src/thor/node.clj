@@ -150,12 +150,22 @@
         ; check if the range has the keys we want
         (if (= (keys id-range) '(:start :end))
           (let [step (int (/ (Math/abs (- (:end id-range) (:start id-range))) num))]
-            (loop [id (:start id-range)]
-              (swap! nlist 
-                     concat 
-                     (list (create-random-node width height { :id id })))
-              (when (< id (:end id-range))
-                (recur (+ id step)))))
+            ;(loop [id (:start id-range)]
+            ;  (swap! nlist 
+             ;        concat 
+             ;        (list (create-random-node width height { :id id })))
+             ; (when (< id (:end id-range))
+              ;  (recur (+ id step))))
+            (loop [n  1 id (:start id-range)]
+             (swap! nlist 
+               concat 
+               (list 
+                 (create-random-node width height { :id id })))
+              (when (< n num)
+                (recur (inc n) (+ id step))
+                )
+              )
+          )
 
           (throw (Error. "Range not of proper type => should be {:start <start-value> :end <end-value>"))
           )

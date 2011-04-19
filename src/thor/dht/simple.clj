@@ -23,7 +23,7 @@
 
 
 ; create an overlay network of some size
-(defn create-overlay [{:keys [num size nodes]  :or {num 10 size 100 nodes '() }}]
+(defn create-overlay [& [{:keys [num size nodes]  :or {num 10 size 100 nodes '() }}]]
   ; make overlay empty -- might need to change this logic
   (if (-> @*overlay* empty? not) 
     (reset! *overlay* {}))
