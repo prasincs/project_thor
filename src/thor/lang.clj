@@ -8,7 +8,9 @@
 (def *total-devices* (atom 100)) ; define total-devices with a default
 (def *experiment* (atom {}))
 (def *duration* (atom 0))
+(def *current-time* (atom 0))
 
+(defn get-current-time [] @*current-time*)
 
 (defn add-device [n d]
   (reset! *devices* (conj @*devices* [n d])))
@@ -38,7 +40,7 @@
   )
 
 (defn create-every-event  [t f]
-  (loop [c t]
+  (loop [c (get-current-time)]
     (if (< c @*duration*)
       (do 
         (create-at-event c f)
@@ -117,13 +119,13 @@
 
 (defn simulation-run[&[args]]
   ; args left there for future -- perhaps key value pairs
-  (loop [current-event (thor.queue/next-event) global-time 0]
+  (loop [current-event (thor.queue/next-event)]
     ; take things from queue and run
-    (println (str "Current Time => " (:time current-event)))
+    (reset! *current-time* (:time current-event))
     (eval (:task current-event))
     (if (and (thor.queue/has-events?)
-             (< global-time @*duration*)) 
-      (recur (thor.queue/next-event) (:time current-event) )))
+             (< @*current-time* @*duration*)) 
+      (recur (thor.queue/next-event))))
 
   )
 

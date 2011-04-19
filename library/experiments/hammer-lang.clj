@@ -5,12 +5,17 @@
 (simulation-init)
 
 (at 10 
-    (println "test"))
+    (println "test " (get-current-time)))
 
 (at 20 
-    (println "test2"))
+    (println "test2 " (get-current-time)))
 
-(every 10 
-       (println "clock"))
+(every 5 
+       (println "clock " (get-current-time) ))
+
+(at 15 
+    (every 10 
+           (println "clock2 " (get-current-time))
+           ))
 
 (simulation-run)
