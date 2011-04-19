@@ -141,7 +141,8 @@
            concat 
            (list (create-random-node width height)))))
 
-; same thing as random-node list but nodes have a sequence
+; same thing as random-node list but nodes have a sequential numbering 
+; based on the id-range
 (defn create-seq-random-node-list [num width height &[id-range] ]
   ; if an ID range is given, create nodes with ID in the range
   (let [nlist (atom ())]
@@ -165,8 +166,6 @@
 
           (throw (Error. "Range not of proper type => should be {:start <start-value> :end <end-value>"))
           )
-
-
         ))
     @nlist
     ))

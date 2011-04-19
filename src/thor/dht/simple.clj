@@ -13,20 +13,27 @@
 (def NUM_NODES 10)
 ; you want some sort of network overlay to talk about the network
 ; or the topology in this case, it will be a ring of nodes 
-(def *overlay* (atom ()))
+(def *overlay* (atom {}))
 (def *nodelist* (atom ()))
 (def *data-store* (init-data-store))
+
+; returns a reference to the node
+(defn get-overlay-node [id]
+  (get @*overlay* id)
+  )
 
 
 ; create an overlay network of some size
 (defn create-overlay [size & nodes]
   ; make overlay empty -- might need to change this logic
   (if (-> @*overlay* empty? not) 
-    (reset! *overlay* ()))
+    (reset! *overlay* {}))
 
   (if (empty? nodes) 
     (do
-      (reset! *nodelist* (create-seq-random-node-list NUM_NODES size size)))
+      ; create nodes with ids from 0 to 2**KEY_SIZE
+      (reset! *nodelist* (create-seq-random-node-list 
+                           NUM_NODES size size {:start 0 :end (expt 2 KEY_SIZE)} )))
     ;else
     (do
       ; needs testing
@@ -38,14 +45,14 @@
         l (last @*nodelist*)]
     ; loop through first to next to last node 
     (dotimes [i ( - (count @*nodelist*) 1)]
-      (swap! *overlay* concat 
-             (list {:node (ref (nth @*nodelist* i))
-                    :next (ref (nth @*nodelist* (+ i 1)))}
-                   )))
+      (swap! *overlay* assoc (:id (nth @*nodelist* i))
+             {:node (ref (nth @*nodelist* i))
+              :next (ref (nth @*nodelist* (+ i 1)))}
+             ))
     ; make it so that the first one is the next of the last one
-    (swap! *overlay* concat 
-           (list {:node (ref l)
-                  :next (ref f)}))
+    (swap! *overlay* assoc (:id l) 
+           {:node (ref l)
+            :next (ref f)})
     )
   )
 
@@ -61,7 +68,15 @@
       successor
       node)))
 
-(defn find-node [start-node hash-key]
-  
-  
-  )
+(defn find-node [start-node-id hash-key]
+  (loop [current (get-overlay-node start-node-id)]
+    ; if hash-key is between the current-node-id and next node id      
+    (if (and (<= (-> current :node deref :id) hash-key)
+             (< hash-key (-> current :next deref :id))  )
+      current
+      ; else
+      (recur  (get-overlay-node (-> current :next deref :id) ))
+      )
+    ))
+
+
