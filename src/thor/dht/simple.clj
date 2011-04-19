@@ -56,6 +56,7 @@
   )
 
 (defn closest-node [node successor hash-key]
+  (println "Closest node")
   (if (> (:id node) (:id successor))
     (if (> (- (expt 2 KEY_SIZE) (:id successor) hash-key) 
            (- hash-key (:id node) )
@@ -67,15 +68,19 @@
       successor
       node)))
 
+
+; FIX infinite loop for 2**KEY_SIZE
 (defn find-node [start-node-id hash-key]
+  (println "Find  node")
   (loop [current (get-overlay-node start-node-id)]
     ; if hash-key is between the current-node-id and next node id      
+    (println (str "looking at " (-> current :node deref :id)))
     (if (and (<= (-> current :node deref :id) hash-key)
              (< hash-key (-> current :next deref :id))  )
       (closest-node (-> current :node deref) 
                     (-> current :next deref) 
                     hash-key)
-      ; else
+      ; else recur
       (recur  (get-overlay-node (-> current :next deref :id) ))
       )
     ))
