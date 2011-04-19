@@ -81,10 +81,10 @@
     ))
 
 (defn store [start-node-id k v]
-  (store-data (find-node start-node-id k) k v)
+  (store-data (:id (find-node start-node-id k)) k v)
   )
 
 (defn lookup [start-node-id k]
-  (get (get-data-in-node (find-node start-node-id k)) :value)
+  (get (get-data-in-node (:id (find-node start-node-id k)) k) :value)
   )
 

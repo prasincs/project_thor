@@ -15,21 +15,27 @@
   )
 
 (defn get-data-item [k]
+  
   (get @*data-store* k)
   )
 
 (defn node-contains-data? [data-item node-id]
-  (let [nodes (:nodes data-item)]
-    (thor.utils/in-seq? node-id @nodes)
-    )
+    (thor.utils/in-seq? node-id @(:nodes data-item))
   )
 
 (defn get-data-in-node [node-id k]
   (let [data-item (get-data-item k)]
-    (if (nil? data-item) nil
+    
+    (if (nil? @data-item) nil
+      (do
+        (println (str "Node Contains? " (node-contains-data? @data-item node-id) node-id ))
       (if (node-contains-data? @data-item node-id)
-        @data-item)
-  )))
+        @data-item
+        nil
+        )
+        )
+  ) 
+    ))
 
 
 (defn store-data [node-id k v]
