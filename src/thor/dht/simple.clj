@@ -15,7 +15,6 @@
 ; or the topology in this case, it will be a ring of nodes 
 (def *overlay* (atom {}))
 (def *nodelist* (atom ()))
-(def *data-store* (init-data-store))
 
 ; returns a reference to the node
 (defn get-overlay-node [id]
@@ -73,10 +72,19 @@
     ; if hash-key is between the current-node-id and next node id      
     (if (and (<= (-> current :node deref :id) hash-key)
              (< hash-key (-> current :next deref :id))  )
-      current
+      (closest-node (-> current :node deref) 
+                    (-> current :next deref) 
+                    hash-key)
       ; else
       (recur  (get-overlay-node (-> current :next deref :id) ))
       )
     ))
 
+(defn store [start-node-id k v]
+  (store-data (find-node start-node-id k) k v)
+  )
+
+(defn lookup [start-node-id k]
+  
+  )
 
