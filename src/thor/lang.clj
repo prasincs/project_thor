@@ -1,6 +1,6 @@
 (ns #^{:doc "A description parser for thor AKA Hammer"}
   thor.lang
-  (:use thor.queue)
+  (:require thor.queue)
   )
 
 (def *devices* (atom {}))
@@ -31,21 +31,24 @@
   (reset! *experiment* attrs)
   )
 
-
-(defn create-every-events  [t f]
-  (let [events (atom ())]
-    (loop [i 0]
-      (reset! events (conj @events (create-event i f)))
-      (when (< i @*duration*) (recur (+ i t)))
-      )
-  @events) )
-
 (defn create-at-event [t f]
   ; add function f at time t
+  (println (str "adding event at time " t))
+  (thor.queue/add-events-to-queue (thor.queue/create-event t f))
   )
 
+(defn create-every-event  [t f]
+  (loop [c t]
+    (if (< c @*duration*)
+      (do 
+        (create-at-event c f)
+        (recur (+ c t))
+        ))
+    ))
+
+
 (defmacro every [t f]
-  `(create-every-events ~t '~f)
+  `(create-every-event ~t '~f)
 )
 
 (defmacro at [t f]
@@ -105,12 +108,21 @@
     @*devices*
   )))
 
+
+(defn simulation-init [&[args]]
+  ; args left there for future -- perhaps key value pairs
+    
+  )
+
+
 (defn simulation-run[&[args]]
   ; args left there for future -- perhaps key value pairs
   (loop [current-event (thor.queue/next-event) global-time 0]
     ; take things from queue and run
+    (println (str "Current Time => " (:time current-event)))
+    (eval (:task current-event))
     (if (and (thor.queue/has-events?)
-             (< global-time *duration*)) 
+             (< global-time @*duration*)) 
       (recur (thor.queue/next-event) (:time current-event) )))
 
   )

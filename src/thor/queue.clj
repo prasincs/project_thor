@@ -20,6 +20,8 @@
   (reset! *queue* (sort-by  :time @*queue*))
   )
 
+
+
 (defn add-random-event [i s] 
   (add-events-to-queue 
     (create-event (int (rand s)) 
