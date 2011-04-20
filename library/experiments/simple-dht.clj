@@ -1,7 +1,10 @@
-(use '[ thor.dht.simple thor.lang])
+(use 'thor.dht.simple 'thor.lang :reload-all)
+
+(use '[clojure.contrib.math :only (expt)])
 
 (defduration 100)
 (defsamples 100)
+(defkeyspace (expt  2 10))
 (defexpt simple-dht
          {
           :title "Simple DHT"
@@ -16,19 +19,22 @@
          )
 
 (defn create-expt-data []
-  (let [expt (atom {})]
+  (let [expt-data (atom {})]
     (loop []
-      (swap! expt assoc (int (rand *keyspace* )) 
-             {:node (int (rand *total-devices*)) 
-              :data (int (rand *total-devices))} )
-      (if (< (count (keys expt)) *total-samples*) (recur))
+      (println "expt data" (count @expt-data))
+      (swap! expt-data assoc (int (rand (get-keyspace) )) 
+             {:node (int (rand (get-total-devices))) 
+              :data (int (rand (get-total-devices)))} )
+      (if (< (count (keys @expt-data)) (get-total-samples)) (recur))
       )
-    ))
+    @expt-data))
 
 
 ; todo-> define *total-devices*
+(println (create-expt-data))
 (def *expt-data* (create-expt-data))
-(create-overlay {:num *total-devices* :size (:width *expt*) })
+(create-overlay {:num (get-total-devices) :size 
+                 (:width (get-experiment-attrs)) })
 
 (at 10 
     (doseq [item expt]

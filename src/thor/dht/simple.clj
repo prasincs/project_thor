@@ -1,5 +1,6 @@
 (ns thor.dht.simple 
   (:use thor.node thor.data-store)
+  (:require thor.queue)
   )
 (use '[clojure.contrib.math :only (expt)])
 

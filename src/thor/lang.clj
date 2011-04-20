@@ -3,14 +3,27 @@
   (:require thor.queue)
   )
 
+
+(use '[clojure.contrib.math :only (expt)])
+
 (def *devices* (atom {}))
 (def *total-samples* (atom 100)) ; define total-samples with a default value
 (def *total-devices* (atom 100)) ; define total-devices with a default
-(def *experiment* (atom {}))
+(def *experiment-attrs* (atom {}))
 (def *duration* (atom 0))
 (def *current-time* (atom 0))
+(def *keyspace* (atom (expt 2 10)))
 
 (defn get-current-time [] @*current-time*)
+
+
+(defn defkeyspace [value]
+  `(reset! *keyspace* ~value))
+
+(defn get-keyspace [] @*keyspace*)
+
+(defn get-total-devices [] @*total-devices*)
+(defn get-devices [] @*devices*)
 
 (defn add-device [n d]
   (reset! *devices* (conj @*devices* [n d])))
@@ -21,8 +34,9 @@
   `(add-device '~n ~attrs ))
 
 (defmacro defsamples [n]
-  `(reset! *total-samples*~ n))
+  `(reset! *total-samples* ~n))
 
+(defn get-total-samples [] @*total-samples*)
 
 (defmacro defduration [n]
   `(reset! *duration* ~n))
@@ -30,8 +44,10 @@
 (defn create-experiment 
   "Create an experiment based on attributes"
   [n attrs]
-  (reset! *experiment* attrs)
+  (reset! *experiment-attrs* attrs)
   )
+
+(defn get-experiment-attrs [] @*experiment-attrs*)
 
 (defn create-at-event [t f]
   ; add function f at time t
