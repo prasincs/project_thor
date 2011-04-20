@@ -1,11 +1,11 @@
 (ns #^{:doc "A description parser for thor AKA Hammer"}
   thor.lang
+  (:use [clojure.contrib.logging])
   (:require thor.queue)
   )
+; taken from http://www.paullegato.com/blog/setting-clojure-log-level/
 
-
-(use '[clojure.contrib.math :only (expt)])
-
+(use '[clojure.contrib.math :only (expt) ])
 (def *devices* (atom {}))
 (def *total-samples* (atom 100)) ; define total-samples with a default value
 (def *total-devices* (atom 100)) ; define total-devices with a default
@@ -106,10 +106,10 @@
  (let [oldns (ns-name *ns*)]
 
     (in-ns  'thor.lang)
-    (binding [*experiment* (atom {})]
+    (binding [*experiment-attrs* (atom {})]
     (load-file f)
     (in-ns oldns)
-    @*experiment*
+    @*experiment-attrs*
   ))
   )
 
@@ -129,7 +129,7 @@
 
 (defn simulation-init [&[args]]
   ; args left there for future -- perhaps key value pairs
-    
+    (debug "Simulation INIT")
   )
 
 

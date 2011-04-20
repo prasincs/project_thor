@@ -1,5 +1,5 @@
-(use 'thor.dht.simple 'thor.lang :reload-all)
-
+(use 'thor.dht.simple 'thor.lang :reload-all )
+(use 'clojure.contrib.logging)
 (use '[clojure.contrib.math :only (expt)])
 
 (defduration 100)
@@ -21,7 +21,7 @@
 (defn create-expt-data []
   (let [expt-data (atom {})]
     (loop []
-      (println "expt data" (count @expt-data))
+      (debug (str "expt data" (count @expt-data)))
       (swap! expt-data assoc (int (rand (get-keyspace) )) 
              {:node (int (rand (get-total-devices))) 
               :data (int (rand (get-total-devices)))} )
@@ -29,9 +29,7 @@
       )
     @expt-data))
 
-
 ; todo-> define *total-devices*
-(println (create-expt-data))
 (def *expt-data* (create-expt-data))
 (create-overlay {:num (get-total-devices) :size 
                  (:width (get-experiment-attrs)) })
