@@ -124,7 +124,7 @@
     (reset! *current-time* (:time current-event))
     (eval (:task current-event))
     (if (and (thor.queue/has-events?)
-             (< @*current-time* @*duration*)) 
+             (<= @*current-time* @*duration*)) 
       (recur (thor.queue/next-event))))
 
   )
