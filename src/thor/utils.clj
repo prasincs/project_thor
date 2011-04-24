@@ -1,4 +1,5 @@
 (ns thor.utils
+ (:use [clojure.contrib.logging])
   )
 (use '[clojure.contrib.string :only (join)])
 (defmacro extract-double [textbox]
@@ -26,3 +27,12 @@
 ; probably should make it lazier
 (defmacro in-seq? "check if an item is in the sequence" [item & sq]
 `(= (some #{~item} ~@sq) ~item) )
+
+; taken from http://www.paullegato.com/blog/setting-clojure-log-level/
+(defn set-log-level! [level]
+  "Sets the root logger's level, and the level of all of its Handlers, to level."
+  (println (.. (impl-get-log "user") getLogger ))
+  (let [logger (.getLogger (impl-get-log ""))]
+    (.setLevel logger level)
+    (doseq [handler (.getHandlers logger)]
+      (. handler setLevel level))))
