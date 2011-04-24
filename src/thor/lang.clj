@@ -3,9 +3,9 @@
   (:use [clojure.contrib.logging])
   (:require thor.queue)
   )
-; taken from http://www.paullegato.com/blog/setting-clojure-log-level/
 
 (use '[clojure.contrib.math :only (expt) ])
+(use '[clojure.contrib.string :only (split)])
 (def *devices* (atom {}))
 (def *total-samples* (atom 100)) ; define total-samples with a default value
 (def *total-devices* (atom 100)) ; define total-devices with a default
@@ -14,9 +14,110 @@
 (def *current-time* (atom 0))
 (def *keyspace* (atom (expt 2 10)))
 
-; medium types 
-(def wired 1)   ; magic number alert! ;)
-(def wireless 2)
+
+
+; medium types  anything but 0
+(def wired 2)   ; magic number alert! ;)
+(def wireless 3)
+(def *network-type* (atom 0))
+
+(def *wireless-network*
+  (atom {:bandwidth 10000 ; wonky magic numbers
+         :frequency 10000 
+         :channel 6
+         :propagation-loss-expt 2
+         :loss '[(propagation-loss)]
+         :noise 0
+         })
+  )
+
+(def *wired-network*  (atom {}))
+
+(defn get-network-attrs []
+  (if (= @*network-type* wireless )
+    @*wireless-network*
+    ))
+
+(defn set-dict-attr [ d k v]
+  (swap! d assoc k v)
+  )
+
+; refactor note - move conversion stuff to utils once stable
+(defn convert-unit [s mult-func]
+  (let [v (split #"\s" s)]
+    (try 
+      (* (Double/parseDouble (first v )) 
+         (mult-func (nth v 1)))
+      (catch Exception e 
+        (prn e "ewwww... I hit an error while converting"))
+      )
+
+    ))
+
+(defn convert-to-Hz [s]
+  (defn multiplier [s]
+    (cond 
+      (= s "GHz") (* 1000 1000 1000)
+      (= s "MHz") (* 1000 1000)
+      (= s "KHz") (* 1000)
+      )
+    )
+  (convert-unit s multiplier)
+  )
+
+(defn convert-to-bps [s]
+  (defn multiplier [s]
+    (cond 
+      (= s "Gbps") (* 1024 1024 1024)
+      (= s "Mbps") (* 1024 1024)
+      (= s "Kbps") (* 1024 )
+      )
+    )
+  (convert-unit s multiplier)
+  )
+
+
+(defn init-wireless-network 
+  "Apply the attributes from the map"
+  [attrs]
+  (defn set-wireless-attr [attr &[func]]
+    (let [v ( if (nil? func) 
+              (attrs attr) 
+              (func (attrs attr))) ]
+      (set-dict-attr *wireless-network* attr v)
+      )
+    )
+  (set-wireless-attr :frequency convert-to-Hz)
+  (set-wireless-attr :bandwidth convert-to-bps)
+  (set-wireless-attr :channel)
+  (set-wireless-attr :propagation-loss-expt)
+  ;(set-wireless-attr :loss do-something-to-loss)
+  (set-wireless-attr :noise)
+  )
+
+(defn init-wired-network [attrs]
+  (println "maybe you want to implement this!")
+  )
+
+(defn init-medium [t attrs]
+  (if (= t wireless)
+    (do 
+      (reset! *network-type* wireless)
+      (init-wireless-network attrs)
+      )
+    (if (= t wired)
+      (do
+      (reset! *network-type* wired)
+        (init-wired-network attrs))
+      )
+    )
+  )
+
+(defmacro defmedium   
+  "Defines the properties of the medium of communication"
+  [t attrs]
+  `(init-medium ~t ~attrs)
+  )
 
 
 
@@ -73,10 +174,21 @@
 
 (defmacro every [t f]
   `(create-every-event ~t '~f)
-)
+  )
 
 (defmacro at [t f]
   `(create-at-event ~t '~f)
+  )
+
+(defmacro at-start
+  [f]
+  `(at 0 ~f)
+  )
+
+(defmacro at-end
+  "A special at function that just runs at the end"
+  [f]
+  `(at @*duration* ~f)
   )
 
 (defn on-function [attrs]
@@ -85,7 +197,6 @@
 
 (defmacro on-new-neighbor [attrs]
   `(on-function ~attrs)
-
   )
 
 
@@ -93,7 +204,7 @@
 (defmacro defexpt 
   "Defines an experiment"
   [n attrs]
-    `(create-experiment '~n ~attrs)
+  `(create-experiment '~n ~attrs)
   )
 
 
@@ -109,14 +220,14 @@
 (defn load-experiment
   "Load experiment data from file f"
   [f]
- (let [oldns (ns-name *ns*)]
+  (let [oldns (ns-name *ns*)]
 
     (in-ns  'thor.lang)
     (binding [*experiment-attrs* (atom {})]
-    (load-file f)
-    (in-ns oldns)
-    @*experiment-attrs*
-  ))
+      (load-file f)
+      (in-ns oldns)
+      @*experiment-attrs*
+      ))
   )
 
 (defn load-device 
@@ -125,17 +236,17 @@
   (let [oldns (ns-name *ns*)]
     (in-ns  'thor.lang)
     (binding [*devices* (atom {})]
-    (load-file f)
-    (in-ns oldns)
-    ;just return all the devices found
-    ;this could be then concat into another list 
-    @*devices*
-  )))
+      (load-file f)
+      (in-ns oldns)
+      ;just return all the devices found
+      ;this could be then concat into another list 
+      @*devices*
+      )))
 
 
 (defn simulation-init [&[args]]
   ; args left there for future -- perhaps key value pairs
-    (debug "Simulation INIT")
+  (debug "Simulation INIT")
   )
 
 
