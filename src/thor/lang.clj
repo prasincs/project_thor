@@ -10,6 +10,12 @@
 (def *duration* (atom 0))
 (def *current-time* (atom 0))
 
+; medium types 
+(def wired 1)   ; magic number alert! ;)
+(def wireless 2)
+
+
+
 (defn get-current-time [] @*current-time*)
 
 (defn add-device [n d]
