@@ -2,6 +2,7 @@
   (:require clojure.core)
   (:require clojure.contrib.math) ; this didn't work not sure why
   (:import [java.util Random])
+  (:use thor.math)
   )
 
 ; 
@@ -42,6 +43,7 @@
   )
 
 
+
 (defn position [x y] 
   (struct-map pos :x x :y y))
 
@@ -67,8 +69,11 @@
 (defn get-location [n]
   (n :location))
 
+(defn node-move [n op pos]
+  
+  )    
+
 (defn get-distance-locations [loc1 loc2]
-  (defn squared [x] (* x x))
   (Math/sqrt 
     (+
   (squared (- (loc2 :x) (loc1 :x)))
@@ -78,7 +83,6 @@
 ; need a place to refer back for use of -> macro
 ; so not refactoring this yet
 (defn get-distance [n1 n2 ]
-  (defn squared [x] (* x x))
   (Math/sqrt
     (+
       (squared ( - (-> n2 :location :x) (-> n1 :location :x)))
@@ -150,12 +154,6 @@
         ; check if the range has the keys we want
         (if (= (keys id-range) '(:start :end))
           (let [step (int (/ (Math/abs (- (:end id-range) (:start id-range))) num))]
-            ;(loop [id (:start id-range)]
-            ;  (swap! nlist 
-             ;        concat 
-             ;        (list (create-random-node width height { :id id })))
-             ; (when (< id (:end id-range))
-              ;  (recur (+ id step))))
             (loop [n  1 id (:start id-range)]
              (swap! nlist 
                concat 

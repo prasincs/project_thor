@@ -1,6 +1,6 @@
 (ns #^{:doc "A description parser for thor AKA Hammer"}
   thor.lang
-  (:use [clojure.contrib.logging])
+  (:use clojure.contrib.logging  thor.utils)
   (:require thor.queue)
   )
 
@@ -41,41 +41,6 @@
 (defn set-dict-attr [ d k v]
   (swap! d assoc k v)
   )
-
-; refactor note - move conversion stuff to utils once stable
-(defn convert-unit [s mult-func]
-  (let [v (split #"\s" s)]
-    (try 
-      (* (Double/parseDouble (first v )) 
-         (mult-func (nth v 1)))
-      (catch Exception e 
-        (prn e "ewwww... I hit an error while converting"))
-      )
-
-    ))
-
-(defn convert-to-Hz [s]
-  (defn multiplier [s]
-    (cond 
-      (= s "GHz") (* 1000 1000 1000)
-      (= s "MHz") (* 1000 1000)
-      (= s "KHz") (* 1000)
-      )
-    )
-  (convert-unit s multiplier)
-  )
-
-(defn convert-to-bps [s]
-  (defn multiplier [s]
-    (cond 
-      (= s "Gbps") (* 1024 1024 1024)
-      (= s "Mbps") (* 1024 1024)
-      (= s "Kbps") (* 1024 )
-      )
-    )
-  (convert-unit s multiplier)
-  )
-
 
 (defn init-wireless-network 
   "Apply the attributes from the map"

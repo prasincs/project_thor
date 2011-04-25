@@ -1,16 +1,11 @@
 (ns thor.network
   (:require clojure.core thor.node)
-  (:use thor.utils)
+  (:use thor.utils thor.math)
   ;  (:import [java.lang.Math])
   )
 
 
-(defn squared [x] (* x x))
 
-(defn find-distance [n1 n2 ] (Math/sqrt
-                               (+
-                                 (squared ( - (-> n2 :location :x) (-> n1 :location :x)))
-                                 (squared ( - (-> n2 :location :y) (-> n1 :location :y))))))
 
 (defn min-range [n1 n2] (min (:range n1) (:range n2)))
 

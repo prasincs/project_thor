@@ -1,7 +1,8 @@
 (ns thor.utils
  (:use [clojure.contrib.logging])
+
   )
-(use '[clojure.contrib.string :only (join)])
+(use '[clojure.contrib.string :only (join split )])
 (defmacro extract-double [textbox]
   `(Double/parseDouble 
                         (.getText ~textbox)))
@@ -36,3 +37,40 @@
     (.setLevel logger level)
     (doseq [handler (.getHandlers logger)]
       (. handler setLevel level))))
+
+(defn convert-unit [s mult-func]
+  (let [v (split #"\s" s)]
+    (try 
+      (* (Double/parseDouble (first v )) 
+         (mult-func (nth v 1)))
+      (catch Exception e 
+        (prn e "ewwww... I hit an error while converting"))
+      )
+
+    ))
+
+(defn convert-to-Hz [s]
+  (defn multiplier [s]
+    (cond 
+      (= s "GHz") (* 1000 1000 1000)
+      (= s "MHz") (* 1000 1000)
+      (= s "KHz") (* 1000)
+      )
+    )
+  (convert-unit s multiplier)
+  )
+
+(defn convert-to-bps [s]
+  (defn multiplier [s]
+    (cond 
+      (= s "Gbps") (* 1024 1024 1024)
+      (= s "Mbps") (* 1024 1024)
+      (= s "Kbps") (* 1024 )
+      )
+    )
+  (convert-unit s multiplier)
+  )
+
+
+
+
