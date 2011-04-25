@@ -69,8 +69,12 @@
 (defn get-location [n]
   (n :location))
 
+(defn change-location [loc op pos]
+                 (assoc pos :x (op (:x pos) (:x loc)  ) 
+                        :y (op (:y pos) (:y loc))))
+
 (defn node-move [n op pos]
-  
+  (assoc n :location  (change-location (:location n) op pos))
   )    
 
 (defn get-distance-locations [loc1 loc2]
