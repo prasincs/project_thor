@@ -2,6 +2,18 @@
 
 (defduration 100)
 
+(defexpt wireless-expt
+         {
+          :title "Simple DHT"
+          :devices {:types ["phone-1"]
+                    :number 1e4
+                    :sample 'random
+                    }
+          :area {:width 100 :height 100}
+          :direction 0 ; eventually want to override for particular device
+          :speed 0
+          }
+         )
 ; For the values of Path Propagation Loss - look at
 ; Wireless Networks - Local and Wireless Networks (Ivan Marsic ) [Pg 33]
 ;
@@ -19,7 +31,6 @@
 
 
 (at-start (do 
-            
             (println "Experiment starting  " 
                    (get-current-time)
                      )
@@ -27,4 +38,7 @@
             ))
 (at-end (println "This is the end my friend  "
                  (get-current-time) ))
+
+
+
 (simulation-run)
