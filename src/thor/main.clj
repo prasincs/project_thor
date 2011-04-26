@@ -1,7 +1,8 @@
 (ns thor.main
   (:gen-class)
-  (:use thor.window thor.lang thor.queue)
-)
+  ;(:use thor.window thor.lang thor.queue)
+  (:use thor.messages clojure.stacktrace clojure.contrib.trace)
+  )
 
 ;(defn put-items[] 
 ;    (dotimes [_ 10]
@@ -12,21 +13,21 @@
 ;
 
 
-(defn main-prog [] 
-  (binding [*queue* (create-queue)]
-    (dotimes [_ 10]
-      (add-events-to-queue *queue* (create-event (format "event %d" _) (-> 10 rand int))
-                           ))
-
-    (loop [event (get-next-event)]
-      (eval (:task event))     
-      (if (no-events?) 
-        (recur (event (get-next-event))))
-      )))
-
-
- (defn -main [& args]
- ;  (thor.window/main)
-  (main-prog)
-   )
-  
+;(defn main-prog [] 
+;  (binding [*queue* (create-queue)]
+;    (dotimes [_ 10]
+;      (add-events-to-queue *queue* (create-event (format "event %d" _) (-> 10 rand int))
+;                           ))
+;
+;    (loop [event (get-next-event)]
+;      (eval (:task event))     
+;      (if (no-events?) 
+;        (recur (event (get-next-event))))
+;      )))
+;
+;
+; (defn -main [& args]
+; ;  (thor.window/main)
+;  (main-prog)
+;   )
+;  

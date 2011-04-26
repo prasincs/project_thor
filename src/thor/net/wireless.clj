@@ -1,5 +1,6 @@
 (ns thor.net.wireless
   (:use thor.node thor.network clojure.contrib.generic.math-functions)
+  (:require thor.queue) ; want queue actions to be more explicit
   )
 
 (use '[clojure.contrib.math :only (expt)])
@@ -14,6 +15,8 @@
   (/ (log x) 
      (log 10)))
 
+
+
 ; for free space propagation loss exponent is 2 anyways
 (defn friis-power-received [{:keys [freq distance 
                                     power-t gain-t gain-r propagation-loss-expt] 
@@ -26,4 +29,8 @@
     gain-t gain-r power-t)
   )
 
-
+(defn send-network-message 
+  "Send a network message from a node to other"
+  [from to message  &[attrs]]
+     
+  )
