@@ -1,4 +1,11 @@
-(ns thor.math)
+(ns thor.math
+  (:use clojure.contrib.generic.math-functions)
+  )
+
+(defn log_10 [x] 
+  (/ (log x) 
+     (log 10)))
+
 
 (defn squared [x] (* x x))
 
