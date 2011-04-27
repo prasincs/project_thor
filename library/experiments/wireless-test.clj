@@ -1,8 +1,11 @@
-(use 'thor.lang :reload-all)
+(use 'thor.lang 
+     'thor.messages
+     'thor.net.wireless
+     '(incanter core charts stats) :reload-all)
 
-(defduration 100)
+(defduration 50)
 
-(defdevice phone-1 {
+(defdevice "phone-1" {
                     :type "phone"
                     :memory "100M"
                     :range "100"
@@ -15,6 +18,7 @@
                     :battery {
                               :type "Li-ion"
                               :voltage 3.6 
+                              :capacity 1600 ;mAh
                               :specific-energy 0.46
                               :efficiency 0.8 ; 80%
                               }
@@ -51,12 +55,12 @@
 
 
 (def transmitter (create-node 
-                   {:device phone-1 
+                   {:device "phone-1" 
                     :location {:x 50 :y 0}} ; start at very top
                    ))
 
 (def receiver (create-node 
-                {:device phone-1
+                {:device "phone-1"
                  :location {:x 50 :y 1}}
                 )) ; start at distance 1 away from transmitter
 
@@ -69,7 +73,13 @@
 (at-end (do 
           (println "Results" )
           (println @power-loss-time)
-          ))
+          (let [time (range 1 (get-duration))
+                power (reverse @power-loss-time)]
+          (view 
+            (line-chart 
+              time power))
+          )
+        ))
 
 
 (every 1 (do
@@ -77,7 +87,12 @@
            (swap! power-loss-time conj 
                   (:power-received 
                     (get-message-network-attrs 
-                      (send-message "test" transmitter receiver ))))
+                      (send-network-message 
+                        "test" 
+                        transmitter 
+                        receiver 
+                        {:time (get-current-time)})
+                      )))
            ))
 
 (simulation-run)

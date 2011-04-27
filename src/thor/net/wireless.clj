@@ -1,6 +1,9 @@
 (ns thor.net.wireless
-  (:use thor.node thor.network)
-  (:require thor.queue) ; want queue actions to be more explicit
+  (:use thor.node 
+        thor.network
+        thor.messages)
+  (:require thor.queue 
+            ) ; want queue actions to be more explicit
   )
 
 (use '[clojure.contrib.math :only (expt)])
@@ -56,5 +59,11 @@
 (defn send-network-message 
   "Send a network message from a node to other"
   [from to message  &[attrs]]
-    
-  )
+  (let [msg (create-message message from to attrs)]
+      (assoc msg :network-attrs 
+             (-> {} (assoc 
+                      :power-received 
+                      (/ 1 
+                         (:time attrs) 
+                            )))))
+    )

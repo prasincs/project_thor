@@ -2,7 +2,7 @@
   (:require clojure.core)
   (:require clojure.contrib.math) ; this didn't work not sure why
   (:import [java.util Random])
-  (:use thor.math)
+  (:use thor.math clojure.contrib.logging)
   )
 
 ; 
@@ -30,11 +30,11 @@
   )
 
 (defn create-node "create a node based on given info"
-  [id pos memory-size]
+  [{:keys [id location memory-size]}]
   (Node.  
     id 
     (create-memory memory-size)
-    pos 
+    location
     0
     0
     0
@@ -61,8 +61,9 @@
                                {id (-> (* max-width max-height) rand int)}} ]]
   (let [ random (Random.)]
     (create-node   
-      id
-      (random-position max-width max-height) 100)))
+      {:id id
+      :location (random-position max-width max-height)
+       :memory-size 100})))
 
 
 ; TODO : make multimethod 
@@ -70,10 +71,14 @@
   (n :location))
 
 (defn change-location [loc op pos]
+                 (println "Change Location")
+                 (println loc)
                  (assoc pos :x (op (:x pos) (:x loc)  ) 
                         :y (op (:y pos) (:y loc))))
 
 (defn node-move [n op pos]
+  (debug "Node Move")
+  (prn (:location n))
   (assoc n :location  (change-location (:location n) op pos))
   )    
 
@@ -123,8 +128,8 @@
              concat 
              (list
                (create-node 
-                 n
-                 (position  
+                 {:id n
+                  :location (position  
                    (+ (:x center)
                       (* (Math/cos 
                            (* angle n) ) radius)) 
@@ -132,7 +137,7 @@
                       (* (Math/sin 
                            (* angle n) ) radius))
                    ) 
-                 1000
+                  :memory-size 1000}
                  ))))
     @nlist))
 

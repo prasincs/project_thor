@@ -1,7 +1,7 @@
 (ns thor.main
   (:gen-class)
   ;(:use thor.window thor.lang thor.queue)
-  (:use thor.messages clojure.stacktrace clojure.contrib.trace)
+  (:use thor.messages clojure.stacktrace )
   )
 
 ;(defn put-items[] 

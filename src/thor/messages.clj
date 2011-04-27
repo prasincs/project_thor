@@ -16,6 +16,9 @@
   (if (contains? (get msg :attrs) attr)
     (-> msg :attrs attr)
     ))
+(defn get-message-network-attrs 
+  [msg]
+    (-> msg :network-attrs ))
 
 (defn get-message-path [msg]
   (get-message-attr msg :nodes)

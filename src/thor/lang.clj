@@ -1,7 +1,7 @@
 (ns #^{:doc "A description parser for thor AKA Hammer"}
   thor.lang
-  (:use clojure.contrib.logging  thor.utils)
-  (:require thor.queue)
+  (:use clojure.contrib.logging thor.utils)
+  (:require thor.queue thor.node)
   )
 
 (use '[clojure.contrib.math :only (expt) ])
@@ -11,7 +11,7 @@
 (def *total-devices* (atom 100)) ; define total-devices with a default
 (def *experiment-attrs* (atom {}))
 (def *duration* (atom 0))
-(def *current-time* (atom 0))
+(def *current-time* (atom 1))
 (def *keyspace* (atom (expt 2 10)))
 
 
@@ -30,8 +30,9 @@
          :noise 0
          })
   )
-
 (def *wired-network*  (atom {}))
+
+(defn get-duration [] @*duration*)
 
 (defn get-network-attrs []
   (if (= @*network-type* wireless )
@@ -231,4 +232,20 @@
   ; todo -> implement
   )
 
+(defn get-device [n]
+  (if (contains? @*devices* n)
+    (get @*devices* n)
+    (throw (Error. "No such device in database"))
+  ))
 
+(defn create-node [attrs]
+
+  (if (contains? attrs :device)
+    
+    (let [attrs (assoc attrs :device-attrs (get-device (attrs :device)))]
+      (println attrs)
+  (atom (thor.node/create-node attrs)))
+  ))
+
+(defn move-node [n op pos]
+  (reset! n (thor.node/node-move @n op pos)))
