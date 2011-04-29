@@ -44,6 +44,52 @@
 
 
 
+(defn reduce-battery-capacity [device time network-used?]
+  (defn get-battery-capacity-in-seconds []
+    (* 3600 (-> device :battery :capacity)) 
+    ; since it's given in mAh - need the value in mAs
+    )
+  
+  (defn get-current-rating 
+    "If network was used, return :network value for current usage 
+    otherwise return the :no-network value"
+    []
+    (if (true? network-used?)
+      (-> device :current :network)
+      (-> device :current :no-network)
+    )) 
+  (let [current-usage (get-current-rating)]
+    (/ (- (get-battery-capacity-in-seconds) current-usage) 3600)
+    )
+  )
+
+
+(defn deduct-power-usage [n {:keys [time network-used?] 
+                             :or {:time 1 :network-used? false}} 
+                          &[attrs]]
+  (if (= (type n) Node)
+    (do )
+    ; else -> must be a reference
+    (do
+      (let [device-attrs (-> @n :device-attrs)]
+        (swap! n 
+               assoc :device-attrs 
+               (assoc device-attrs 
+                      :battery 
+                      (let [bat (-> device-attrs :battery)]
+                        (assoc bat 
+                               :capacity 
+                               (reduce-battery-capacity 
+                                 device-attrs time network-used?)))
+                      )
+               )
+        )
+      )
+    )
+  )
+  
+
+
 (defn position [x y] 
   (struct-map pos :x x :y y))
 

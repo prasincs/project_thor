@@ -65,5 +65,6 @@
                       :power-received 
                       (/ 1 
                          (:time attrs) 
-                            )))))
-    )
+                            )))
+               )
+             ))

@@ -9,8 +9,12 @@
                     :type "phone"
                     :memory "100M"
                     :range "100"
+                    :current
+                      {:no-network 100 ; mA
+                       :network 200 ;mA
+                      }
                     :power {:rx 5 
-                            :tx 5} ; in volts
+                            :tx 5} ; in watts
 
                     :gain {:r 5.15 
                            :t 5.15}
