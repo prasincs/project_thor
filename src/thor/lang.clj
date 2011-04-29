@@ -13,7 +13,7 @@
 (def *duration* (atom 0))
 (def *current-time* (atom 1))
 (def *keyspace* (atom (expt 2 10)))
-
+(def *simulation-running* (atom false))
 
 
 ; medium types  anything but 0
@@ -129,17 +129,23 @@
   )
 
 (defn create-every-event  [t f]
-  (loop [c (get-current-time)]
+  (let [c (get-current-time)]
     (if (< c @*duration*)
       (do 
+        
         (create-at-event c f)
-        (recur (+ c t))
+        ;(recur (+ c t))
         ))
-    ))
-
+    )
+)
 
 (defmacro every [t f]
-  `(create-every-event ~t '~f)
+  `(create-at-event (get-current-time) '~f)
+  `(create-at-event (+ (get-current-time)
+                       ~t) (do ~f
+                             '(every ~t ~f)))
+   ;                 '(every ~t ~f)
+    ;                )
   )
 
 (defmacro at [t f]
@@ -218,14 +224,23 @@
 
 (defn simulation-run[&[args]]
   ; args left there for future -- perhaps key value pairs
+  (reset! *simulation-running* true)
   (loop [current-event (thor.queue/next-event)]
     ; take things from queue and run
     (reset! *current-time* (:time current-event))
+    ;(prn (:task current-event))
     (eval (:task current-event))
-    (if (and (thor.queue/has-events?)
-             (<= @*current-time* @*duration*)) 
+    (if (and
+          (true? @*simulation-running*)
+          (thor.queue/has-events?)
+          (<= @*current-time* @*duration*)) 
       (recur (thor.queue/next-event))))
 
+  )
+
+(defn end-simulation []
+  (thor.queue/empty!)
+  (reset! *simulation-running* false)
   )
 
 (defn display-results [&[args]]
@@ -241,8 +256,15 @@
 (defn new-node [attrs]
 
   (if (contains? attrs :device)
-    (atom (thor.node/create-node (assoc attrs :device-attrs (get-device (attrs :device)))
+    (atom (thor.node/create-node 
+            (assoc attrs :device-attrs 
+                   (get-device 
+                     (attrs :device)))
   ))))
 
 (defn move-node [n op pos]
   (reset! n (thor.node/node-move @n op pos)))
+
+(defn get-battery-capacity [n]
+  (-> n deref :device-attrs :battery :capacity)
+  )

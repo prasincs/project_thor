@@ -1,7 +1,7 @@
 (use 'thor.lang 
      'thor.node 
      :reload-all)
-(defduration 1000)
+
 (defdevice "phone-1" {
                     :type "phone"
                     :memory "100M"

@@ -47,10 +47,13 @@
   )
 
 
+(defn device-attrs-get-battery-capacity [device]
+    (-> device :battery :capacity)
+    )
 
 (defn reduce-battery-capacity [device time network-used?]
   (defn get-battery-capacity-in-seconds []
-    (* 3600 (-> device :battery :capacity)) 
+    (* 3600 (device-attrs-get-battery-capacity device)) 
     ; since it's given in mAh - need the value in mAs
     )
 
@@ -207,7 +210,10 @@
       (dotimes [n num] 
         (swap! nlist 
                concat 
-               (list (create-random-node width height { :id n }))))
+               (list 
+                 (create-random-node 
+                   width height { :id n }
+                   ))))
 
       ; else
       (do

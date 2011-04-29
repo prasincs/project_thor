@@ -21,6 +21,9 @@
   )
 
 
+(defn empty! []
+  (reset! *queue* ())
+  )
 
 (defn add-random-event [i s] 
   (add-events-to-queue 
