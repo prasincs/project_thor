@@ -3,7 +3,9 @@
      '(incanter core charts)
      :reload-all)
 
-(defduration 100000)
+
+(def batt-life (atom ()))
+  (defduration 100000)
 
 (defdevice "phone-1" {
                     :type "phone"
@@ -30,6 +32,9 @@
 
            )
 
+
+
+(simulation-init)
 (def t 
   (new-node 
     {:device "phone-1"}))
@@ -46,14 +51,16 @@
          (if (<= (get-battery-capacity t) 0)
            (do
 
-             (let [time (range 1 (get-current-time))
-                   battery (reverse @battery-capacity-list)]
-               (view 
-                 (line-chart 
-                   time battery))
-               )
-
-             (prn "Battery dead")
+;             (let [time (range 1 (get-current-time))
+;                   battery (reverse @battery-capacity-list)]
+;               (view 
+;                 (line-chart 
+;                   time battery))
+;               )
+;
+             ;(prn "Battery dead")
+             (swap! batt-life 
+                    conj (get-current-time))
              (prn (get-current-time))
              (end-simulation)
              )
@@ -69,10 +76,14 @@
              )
            )))
 
-(every 5 (do
-           (deduct-power-usage t true)
+(every 100 (do
+           (deduct-power-usage t {:network-used? true})
            ))
 
 
 ;(prn t)
 (simulation-run)
+ ; (if (< freq 100)
+  ;  (recur (+ freq 5)))
+  
+

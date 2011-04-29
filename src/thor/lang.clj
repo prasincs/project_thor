@@ -124,7 +124,7 @@
 
 (defn create-at-event [t f]
   ; add function f at time t
-  (println (str "adding event at time " t))
+  ;(println (str "adding event at time " t))
   (thor.queue/add-events-to-queue (thor.queue/create-event t f))
   )
 
@@ -219,6 +219,7 @@
 (defn simulation-init [&[args]]
   ; args left there for future -- perhaps key value pairs
   (debug "Simulation INIT")
+  (thor.queue/empty!)
   )
 
 

@@ -231,7 +231,8 @@
               )
           )
 
-          (throw (Error. "Range not of proper type => should be {:start <start-value> :end <end-value>"))
+          (throw (Error. "Range not of proper type => 
+                         should be {:start <start-value> :end <end-value>"))
           )
         ))
     @nlist
