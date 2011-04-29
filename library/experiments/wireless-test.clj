@@ -58,12 +58,12 @@
             })
 
 
-(def transmitter (create-node 
+(def transmitter (new-node 
                    {:device "phone-1" 
                     :location {:x 50 :y 0}} ; start at very top
                    ))
 
-(def receiver (create-node 
+(def receiver (new-node 
                 {:device "phone-1"
                  :location {:x 50 :y 1}}
                 )) ; start at distance 1 away from transmitter

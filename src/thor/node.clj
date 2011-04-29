@@ -25,12 +25,14 @@
    direction
    power
    range
+   device-attrs
+   network-attrs
    ]
 
   )
 
 (defn create-node "create a node based on given info"
-  [{:keys [id location memory-size]}]
+  [{:keys [id location memory-size device-attrs network-attrs ] :or {:device-attrs {} :network-attrs {}}} ]
   (Node.  
     id 
     (create-memory memory-size)
@@ -39,6 +41,8 @@
     0
     0
     10
+    device-attrs
+    network-attrs
     )
   )
 
@@ -49,7 +53,7 @@
     (* 3600 (-> device :battery :capacity)) 
     ; since it's given in mAh - need the value in mAs
     )
-  
+
   (defn get-current-rating 
     "If network was used, return :network value for current usage 
     otherwise return the :no-network value"
@@ -57,16 +61,17 @@
     (if (true? network-used?)
       (-> device :current :network)
       (-> device :current :no-network)
-    )) 
-  (let [current-usage (get-current-rating)]
-    (/ (- (get-battery-capacity-in-seconds) current-usage) 3600)
-    )
+      )) 
+
+  (/ 
+    (- (get-battery-capacity-in-seconds) 
+       (get-current-rating)) 
+    3600.0)
   )
 
 
-(defn deduct-power-usage [n {:keys [time network-used?] 
-                             :or {:time 1 :network-used? false}} 
-                          &[attrs]]
+(defn deduct-power-usage [n &[{:keys [time network-used?] 
+                             :or {:time 1 :network-used? false}}] ]
   (if (= (type n) Node)
     (do )
     ; else -> must be a reference

@@ -238,14 +238,11 @@
     (throw (Error. "No such device in database"))
   ))
 
-(defn create-node [attrs]
+(defn new-node [attrs]
 
   (if (contains? attrs :device)
-    
-    (let [attrs (assoc attrs :device-attrs (get-device (attrs :device)))]
-      (println attrs)
-  (atom (thor.node/create-node attrs)))
-  ))
+    (atom (thor.node/create-node (assoc attrs :device-attrs (get-device (attrs :device)))
+  ))))
 
 (defn move-node [n op pos]
   (reset! n (thor.node/node-move @n op pos)))
