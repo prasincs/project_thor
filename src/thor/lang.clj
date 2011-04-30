@@ -121,8 +121,11 @@
   )
 
 (defn get-experiment-attrs [] 
-  (debug "Experiemnt Attrs" )
   @*experiment-attrs*)
+
+(defn get-experiment-area []
+  (-> @*experiment-attrs* :area)
+  )
 
 (defn create-at-event [t f]
   ; add function f at time t
@@ -143,9 +146,10 @@
 
 (defmacro every [t f]
   `(create-at-event (get-current-time) '~f)
-  `(create-at-event (+ (get-current-time)
-                       ~t) (do ~f
-                             '(every ~t ~f)))
+  `(create-at-event (+ 
+                      (get-current-time)
+                      ~t) (do ~f
+                            '(every ~t ~f)))
   )
 
 (defmacro at [t f]

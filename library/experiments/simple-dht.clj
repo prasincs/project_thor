@@ -34,8 +34,9 @@
 
 ; todo-> define *total-devices*
 (def *expt-data* (create-expt-data))
+
 (create-overlay {:num (get-total-devices) :size 
-                 (:width (get-experiment-attrs)) })
+                 (:width (get-experiment-area)) })
 
 
 ;(at 10 

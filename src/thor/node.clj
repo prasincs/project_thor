@@ -226,18 +226,22 @@
       (do
         ; check if the range has the keys we want
         (if (= (keys id-range) '(:start :end))
-          (let [step (int (/ (Math/abs (- (:end id-range) (:start id-range))) num))]
+          (let [step (int (/ 
+                            (Math/abs 
+                              (- (:end id-range) 
+                                 (:start id-range))) 
+                            num))]
             (loop [n  1 id (:start id-range)]
-             (swap! nlist 
-               concat 
-               (list 
-                 (prn "width->" width ", height->"height)
-                 (create-random-node {:max-width width :max-height height} { :id id })))
+              (swap! nlist 
+                     concat 
+                     (list 
+                       (prn "width->" width ", height->"height)
+                       (create-random-node {:max-width width :max-height height} { :id id })))
               (when (< n num)
                 (recur (inc n) (+ id step))
                 )
               )
-          )
+            )
 
           (throw (Error. "Range not of proper type => 
                          should be {:start <start-value> :end <end-value>"))
