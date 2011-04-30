@@ -47,6 +47,14 @@
   )
 
 
+(defn get-node-network-attrs [n]
+  (:network-attrs n))
+
+(defn get-node-device-attrs [n]
+  (:device-attrs n))
+
+
+
 (defn device-attrs-get-battery-capacity [device]
     (-> device :battery :capacity)
     )
@@ -117,11 +125,19 @@
                            {:max-width 100
                             :max-height 100}}
                           & [ { :keys [id] :or 
-                               {id (-> (* max-width max-height) rand int)}} ]]
+                               {id (-> 
+                                     (* max-width 
+                                        max-height)
+                                     rand int)}} 
+                             ]]
     (create-node   
       {:id id
-      :location (random-position max-width max-height)
-       :memory-size 100}))
+      :location (random-position 
+                  max-width max-height)
+       :memory-size 100
+       :device-attrs {}
+       :network-attrs {}
+       }))
 
 
 ; TODO : make multimethod 
@@ -174,7 +190,8 @@
 ; creates nodes in a circle
 ; given width and height, returns nodes around
 (defn create-nodes-in-circle [num width height]
-  (let [center (position (/ width 2) (/ height 2))
+  (let [center (position 
+                 (/ width 2) (/ height 2))
         radius (get-distance-locations 
                  center 
                  (position width (/ height 2)) )  
@@ -207,7 +224,8 @@
 
 ; same thing as random-node list but nodes have a sequential numbering 
 ; based on the id-range
-(defn create-seq-random-node-list [num width height &[id-range] ]
+(defn create-seq-random-node-list 
+  [num width height &[id-range] ]
   ; if an ID range is given, create nodes with ID in the range
   (debug "random node list")
   (let [nlist (atom ())]
@@ -239,9 +257,12 @@
               )
             )
 
-          (throw (Error. "Range not of proper type => 
+          (throw (Error. 
+                   "Range not of proper type => 
                          should be {:start <start-value> :end <end-value>"))
           )
         ))
     @nlist
     ))
+
+

@@ -33,6 +33,7 @@
   (if (empty? nodes) 
     (do
       (println "Populating Nodeslist with random nodes")
+      (prn "num-devices -> " num)
       (prn size)
       ; create nodes with ids from 0 to 2**KEY_SIZE
       (reset! *nodelist* (create-seq-random-node-list 
@@ -78,19 +79,24 @@
 ; FIX infinite loop for 2**KEY_SIZE
 (defn find-node [start-node-id hash-key]
   (println "Find  node")
-  (loop [current (get-overlay-node start-node-id)]
+  (loop [current (get-overlay-node start-node-id)
+         hop 0]
     ; if hash-key is between the current-node-id and next node id      
-    (println "current-node " current)
-    ;(println (str "looking at " (-> current :node deref :id)))
+    ;(println "current-node " current)
+    (println (str "looking at " (-> current :node deref :id)))
     (if (and (<= (-> current :node deref :id) hash-key)
              (< hash-key (-> current :next deref :id))  )
+      (do
+        (println "hop count" hop)
       (closest-node (-> current :node deref) 
                     (-> current :next deref) 
-                    hash-key)
+                    hash-key))
       ; else recur
-      (recur  (get-overlay-node (-> current :next deref :id) ))
+      (recur  (get-overlay-node 
+                (-> current :next deref :id)) 
+             (inc hop)))
       )
-    ))
+    )
 
 (defn store [start-node-id k v]
   (println "storing " k "->" v ". Starting from " start-node-id)
@@ -103,3 +109,11 @@
   (get (get-data-in-node (:id (find-node start-node-id k)) k) :value)
   )
 
+(defn get-random-node []
+  (deref (nth *nodelist* (-> (count @*nodelist*) rand int )
+       ))
+  )
+
+(defn get-number-of-devices []
+  (count @*nodelist*)
+  )

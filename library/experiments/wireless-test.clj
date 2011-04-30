@@ -1,8 +1,8 @@
 (use 'thor.lang 
      'thor.messages
      'thor.net.wireless
-     '(incanter core charts stats) :reload-all)
-
+    '(incanter core charts stats) 
+     :reload-all)
 (defduration 50)
 
 (defdevice "phone-1" {
@@ -34,7 +34,7 @@
          {
           :title "Wireless Experiment"
           ;:devices {:types ["phone-1"]
-          ;          :number 1e4
+          ;          :number 10
           ;          :sample 'random
           ;          }
           :area {:width 100 :height 100}
@@ -69,7 +69,7 @@
                 )) ; start at distance 1 away from transmitter
 
 (def power-loss-time (atom ()))
-
+(def distances (atom ()))
 
 (at-start (do 
                  ))
@@ -77,17 +77,18 @@
 (at-end (do 
           (println "Results" )
           (println @power-loss-time)
-          (let [time (range 1 (get-duration))
+          (let [ distance @distances
                 power (reverse @power-loss-time)]
           (view 
             (line-chart 
-              time power))
+              distance power))
           )
         ))
 
 
 (every 1 (do
            (move-node receiver + {:x 0 :y 1})
+           (swap! distances conj (get-distance-between-nodes transmitter receiver))
            (swap! power-loss-time conj 
                   (:power-received 
                     (get-message-network-attrs 

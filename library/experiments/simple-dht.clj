@@ -22,8 +22,9 @@
   (let [expt-data (atom {})]
     (loop []
       (debug (str "expt data " (count @expt-data)))
-      (swap! expt-data assoc (int (rand (get-keyspace) )) 
-             {:node (int (rand (get-total-devices))) 
+      (swap! expt-data 
+             assoc (int (rand (get-keyspace) )) 
+             { 
               :data (int (rand (get-total-devices)))} )
       (if (< (count (keys @expt-data)) 
              (get-total-samples)) 
@@ -35,22 +36,22 @@
 ; todo-> define *total-devices*
 (def *expt-data* (create-expt-data))
 
-(create-overlay {:num (get-total-devices) :size 
-                 (:width (get-experiment-area)) })
+(create-overlay {:num (get-total-devices) 
+                 :size (:width (get-experiment-area)) })
 
 
-(at 10
-    (do
-      (println "Storing datas")
-
-      (doseq [k (keys *expt-data*)]
-        (let [item (get *expt-data* k)]
-          (println k item)
-          (store (item :node) 
-                 k 
-                 (item :data))
-          ))
-      ))
+;(at 10
+;    (do
+;      (println "Storing datas")
+;
+;      (doseq [k (keys *expt-data*)]
+;        (let [item (get *expt-data* k)]
+;          ;(println k item)
+;          (store 0 
+;                 k 
+;                 (item :data))
+;          ))
+;      ))
 
 ;(at 15
 ;       (let [data (first *expt-data*)]

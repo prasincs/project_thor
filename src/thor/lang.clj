@@ -1,7 +1,7 @@
 (ns #^{:doc "A description parser for thor AKA Hammer"}
   thor.lang
   (:use clojure.contrib.logging thor.utils)
-  (:require thor.queue thor.node)
+  (:require thor.queue thor.node thor.net.wireless)
   )
 
 (use '[clojure.contrib.math :only (expt) ])
@@ -30,7 +30,6 @@
          :noise 0
          })
   )
-(def *wired-network*  (atom {}))
 
 (defn get-duration [] @*duration*)
 
@@ -59,6 +58,7 @@
   (set-wireless-attr :propagation-loss-expt)
   ;(set-wireless-attr :loss do-something-to-loss)
   (set-wireless-attr :noise)
+  (thor.net.wireless/set-wireless-attributes @*wireless-network*)
   )
 
 (defn init-wired-network [attrs]
@@ -95,7 +95,8 @@
 
 (defn get-keyspace [] @*keyspace*)
 
-(defn get-total-devices [] @*total-devices*)
+(defn get-total-devices [] 
+  @*total-devices*)
 (defn get-devices [] @*devices*)
 
 (defn add-device [n d]
@@ -270,6 +271,12 @@
 (defn move-node [n op pos]
   (reset! n (thor.node/node-move @n op pos)))
 
+(defn get-distance-between-nodes
+  [from to]
+  (thor.node/get-distance @from @to)
+  )
+
 (defn get-battery-capacity [n]
   (-> n deref :device-attrs :battery :capacity)
   )
+
