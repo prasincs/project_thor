@@ -80,7 +80,8 @@
   (println "Find  node")
   (loop [current (get-overlay-node start-node-id)]
     ; if hash-key is between the current-node-id and next node id      
-    (println (str "looking at " (-> current :node deref :id)))
+    (println "current-node " current)
+    ;(println (str "looking at " (-> current :node deref :id)))
     (if (and (<= (-> current :node deref :id) hash-key)
              (< hash-key (-> current :next deref :id))  )
       (closest-node (-> current :node deref) 
@@ -92,8 +93,10 @@
     ))
 
 (defn store [start-node-id k v]
-  (prn "storing " k "->" v "in " start-node-id)
-  (store-data (:id (find-node start-node-id k)) k v)
+  (println "storing " k "->" v ". Starting from " start-node-id)
+  (store-data 
+    (:id 
+      (find-node start-node-id k)) k v)
   )
 
 (defn lookup [start-node-id k]

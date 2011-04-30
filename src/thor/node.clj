@@ -210,17 +210,14 @@
 (defn create-seq-random-node-list [num width height &[id-range] ]
   ; if an ID range is given, create nodes with ID in the range
   (debug "random node list")
-  (prn width)
-  (prn height)
   (let [nlist (atom ())]
     (if (nil? id-range)
       (dotimes [n num] 
         (swap! nlist 
-               concat 
-               (list 
+               conj 
                  (create-random-node 
                    width height { :id n }
-                   ))))
+                   )))
 
       ; else
       (do
@@ -235,7 +232,6 @@
               (swap! nlist 
                      concat 
                      (list 
-                       (prn "width->" width ", height->"height)
                        (create-random-node {:max-width width :max-height height} { :id id })))
               (when (< n num)
                 (recur (inc n) (+ id step))

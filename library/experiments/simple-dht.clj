@@ -3,7 +3,7 @@
 (use '[clojure.contrib.math :only (expt)])
 
 (defduration 100)
-(defsamples 100)
+(defsamples 10)
 (defkeyspace (expt  2 10))
 (defexpt simple-dht
          {
@@ -29,7 +29,7 @@
              (get-total-samples)) 
         (recur))
       )
-    (prn @expt-data)
+    ;(prn @expt-data)
     @expt-data))
 
 ; todo-> define *total-devices*
@@ -39,17 +39,24 @@
                  (:width (get-experiment-area)) })
 
 
-;(at 10 
-;    (doseq [item expt]
-;      (store (item :node) (item :key) (item :value))
-;      )
-;    )
-;
-;(every 5
+(at 10
+    (do
+      (println "Storing datas")
+
+      (doseq [k (keys *expt-data*)]
+        (let [item (get *expt-data* k)]
+          (println k item)
+          (store (item :node) 
+                 k 
+                 (item :data))
+          ))
+      ))
+
+;(at 15
 ;       (let [data (first *expt-data*)]
 ;         (find-node 0 (:key data) )
 ;         )
 ;       )
 ;
-;(simulation-run)
+(simulation-run)
 ;(display-results)
