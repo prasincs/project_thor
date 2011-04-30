@@ -120,7 +120,9 @@
   (reset! *experiment-attrs* attrs)
   )
 
-(defn get-experiment-attrs [] @*experiment-attrs*)
+(defn get-experiment-attrs [] 
+  (debug "Experiemnt Attrs" )
+  @*experiment-attrs*)
 
 (defn create-at-event [t f]
   ; add function f at time t
@@ -144,8 +146,6 @@
   `(create-at-event (+ (get-current-time)
                        ~t) (do ~f
                              '(every ~t ~f)))
-   ;                 '(every ~t ~f)
-    ;                )
   )
 
 (defmacro at [t f]

@@ -110,14 +110,18 @@
 ; used to create a node with  
 ; invoke this with (create-random-node width height {:id num})
 ; id/other keys are optional
-(defn create-random-node [max-width max-height 
+(defn create-random-node [
+                          {:keys 
+                           [max-width max-height] 
+                           :or
+                           {:max-width 100
+                            :max-height 100}}
                           & [ { :keys [id] :or 
                                {id (-> (* max-width max-height) rand int)}} ]]
-  (let [ random (Random.)]
     (create-node   
       {:id id
       :location (random-position max-width max-height)
-       :memory-size 100})))
+       :memory-size 100}))
 
 
 ; TODO : make multimethod 
@@ -205,6 +209,9 @@
 ; based on the id-range
 (defn create-seq-random-node-list [num width height &[id-range] ]
   ; if an ID range is given, create nodes with ID in the range
+  (debug "random node list")
+  (prn width)
+  (prn height)
   (let [nlist (atom ())]
     (if (nil? id-range)
       (dotimes [n num] 
@@ -224,7 +231,8 @@
              (swap! nlist 
                concat 
                (list 
-                 (create-random-node width height { :id id })))
+                 (prn "width->" width ", height->"height)
+                 (create-random-node {:max-width width :max-height height} { :id id })))
               (when (< n num)
                 (recur (inc n) (+ id step))
                 )
