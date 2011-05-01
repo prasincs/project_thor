@@ -1,9 +1,10 @@
 (use 'thor.lang 
      'thor.messages
      'thor.net.wireless
+     'thor.node
     '(incanter core charts stats) 
      :reload-all)
-(defduration 50)
+(defduration 1000)
 
 (defdevice "phone-1" {
                     :type "phone"
@@ -14,15 +15,15 @@
                        :network 200 ;mA
                       }
                     :power {:rx 5 
-                            :tx 5} ; in watts
+                            :tx 10} ; in watts
 
-                    :gain {:r 5.15 
-                           :t 5.15}
+                    :gain {:r 10 
+                           :t 10}
 
                     :battery {
                               :type "Li-ion"
                               :voltage 3.6 
-                              :capacity 1600 ;mAh
+                              :capacity 100 ;mAh
                               :specific-energy 0.46
                               :efficiency 0.8 ; 80%
                               }
@@ -70,7 +71,7 @@
 
 (def power-loss-time (atom ()))
 (def distances (atom ()))
-
+(def battery-capacity-list (atom ()))
 (at-start (do 
                  ))
 
@@ -78,20 +79,45 @@
           (println "Results" )
           (println @power-loss-time)
           (let [ distance (reverse @distances)
-                power (reverse @power-loss-time)]
-          (view 
-            (xy-plot 
-              distance power 
-              :title "Power Degradation over distance"
-              :series-label "results" 
-              :legend true))
+                power (reverse @power-loss-time)
+                battery (reverse @battery-capacity-list)
+                power-plot (xy-plot 
+                             distance power
+                             :title "Power Degradation over distance"
+                             :series-label "power" 
+                             :shape 1
+                             :legend true)
+                battery-plot (xy-plot 
+                               distance battery
+                               :title "Battery Degradation over distance"
+                               :series-label "battery capacity" 
+                               :shape 1
+                               :legend true)
+                ]
+            (view power-plot)
+            (view battery-plot)   
+            ;(add-lines plot distance battery :shape 2)
+
+            )
+          
           )
-        ))
+        )
 
 
-(every 1 (do
+(every 10 (do
            (move-node receiver + {:x 0 :y 1})
-           (swap! distances conj (get-distance-between-nodes transmitter receiver))
+           (swap! distances conj 
+                  (get-distance-between-nodes
+                    transmitter receiver))
+           ;(if (> (get-battery-capacity receiver ) 0)
+           (deduct-power-usage receiver 
+                               {:time 10
+                                :network-used? true})
+           ;)
+           (swap! battery-capacity-list conj 
+                  (get-battery-capacity receiver)
+                  )
+           (println (get-battery-capacity receiver))
            (swap! power-loss-time conj 
                   (:power-received 
                     (get-message-network-attrs 

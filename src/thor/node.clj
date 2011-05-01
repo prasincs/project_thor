@@ -60,6 +60,7 @@
     )
 
 (defn reduce-battery-capacity [device time network-used?]
+
   (defn get-battery-capacity-in-seconds []
     (* 3600 (device-attrs-get-battery-capacity device)) 
     ; since it's given in mAh - need the value in mAs
@@ -76,7 +77,7 @@
 
   (/ 
     (- (get-battery-capacity-in-seconds) 
-       (get-current-rating)) 
+       (* time (get-current-rating))) 
     3600.0)
   )
 
@@ -88,6 +89,7 @@
     ; else -> must be a reference
     (do
       (let [device-attrs (-> @n :device-attrs)]
+        (println "time => " time)
         (swap! n 
                assoc :device-attrs 
                (assoc device-attrs 
