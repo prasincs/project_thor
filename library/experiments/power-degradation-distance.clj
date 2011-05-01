@@ -78,9 +78,12 @@
 (at-end (do 
           (println "Results" )
           (println @power-loss-time)
-          (let [ distance (reverse @distances)
-                power (reverse @power-loss-time)
-                battery (reverse @battery-capacity-list)
+          (let [ distance (reverse
+                            @distances)
+                power (reverse 
+                        @power-loss-time)
+                battery (reverse 
+                          @battery-capacity-list)
                 power-plot (xy-plot 
                              distance power
                              :title "Power Degradation over distance"

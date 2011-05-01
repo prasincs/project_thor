@@ -8,11 +8,11 @@
 (use '[clojure.contrib.string :only (split)])
 (def *devices* (atom {}))
 (def *total-samples* (atom 100)) ; define total-samples with a default value
-(def *total-devices* (atom 100)) ; define total-devices with a default
+(def *total-devices* (atom 20)) ; define total-devices with a default
 (def *experiment-attrs* (atom {}))
 (def *duration* (atom 0))
 (def *current-time* (atom 1))
-(def *keyspace* (atom (expt 2 10)))
+(def *keyspace* (atom (expt 2 32)))
 (def *simulation-running* (atom false))
 
 
@@ -37,6 +37,9 @@
   (if (= @*network-type* wireless )
     @*wireless-network*
     ))
+
+(defn set-total-devices [new-total]
+  (reset! *total-devices* new-total))
 
 (defn set-dict-attr [ d k v]
   (swap! d assoc k v)
@@ -91,6 +94,7 @@
 
 
 (defn defkeyspace [value]
+  (println "setting keyspace to " value)
   `(reset! *keyspace* ~value))
 
 (defn get-keyspace [] @*keyspace*)
@@ -119,7 +123,12 @@
   "Create an experiment based on attributes"
   [n attrs]
   (reset! *experiment-attrs* attrs)
-  )
+  (let [devices-num (-> attrs :devices :number)]
+  (set-total-devices (if (nil? devices-num)
+                       10
+                       devices-num
+                       ))
+  ))
 
 (defn get-experiment-attrs [] 
   @*experiment-attrs*)

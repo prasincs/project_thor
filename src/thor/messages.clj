@@ -12,6 +12,10 @@
 (defn get-message-content [msg]
   (get msg :message))
 
+(defn get-messages []
+  (deref *messages*)
+  )
+
 (defn get-message-attr [msg attr]
   (if (contains? (get msg :attrs) attr)
     (-> msg :attrs attr)
@@ -23,6 +27,7 @@
 (defn get-message-path [msg]
   (get-message-attr msg :nodes)
   )
+
 
 (defn build-message-attrs 
   "Build a hash map of the attributes we care about

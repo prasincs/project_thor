@@ -1,5 +1,5 @@
 (ns thor.dht.simple 
-  (:use thor.node thor.data-store)
+  (:use thor.node thor.data-store thor.messages)
   (:require thor.queue)
   )
 (use '[clojure.contrib.math :only (expt)])
@@ -10,7 +10,7 @@
 
 ; KEY_SIZE defines the maximum number of keys possible in the system
 ; 2**KEY_SIZE will the the size
-(def KEY_SIZE 10)
+(def KEY_SIZE 32)
 (def NUM_NODES 10)
 ; you want some sort of network overlay to talk about the network
 ; or the topology in this case, it will be a ring of nodes 
@@ -22,7 +22,9 @@
   (get @*overlay* id)
   )
 
-
+(defn get-number-of-devices []
+  (count @*nodelist*)
+  )
 ; create an overlay network of some size
 (defn create-overlay [& [{:keys [num size nodes]  
                           :or {:num 10 :size 100 :nodes () }}]]
@@ -80,40 +82,75 @@
 (defn find-node [start-node-id hash-key]
   (println "Find  node")
   (loop [current (get-overlay-node start-node-id)
-         hop 0]
+         hop 0
+         message  nil        
+         ]
     ; if hash-key is between the current-node-id and next node id      
     ;(println "current-node " current)
     (println (str "looking at " (-> current :node deref :id)))
-    (if (and (<= (-> current :node deref :id) hash-key)
-             (< hash-key (-> current :next deref :id))  )
+    (if  
+      (and (<= (-> current :node deref :id) hash-key)
+           (or 
+             (< hash-key (-> current :next deref :id))  
+             (zero? (-> current :next deref :id ))
+             )
+           )
       (do
-        (println "hop count" hop)
-      (closest-node (-> current :node deref) 
-                    (-> current :next deref) 
-                    hash-key))
+        (let [message (if (nil? message)
+                     (create-message "find-node"
+                                     start-node-id
+                                     (-> current :node deref :id)
+                                     {:hops hop})
+                     message)]
+        {:node 
+         (closest-node (-> current :node deref) 
+                       (-> current :next deref) 
+                       hash-key)
+         :message message }
+        ))
       ; else recur
-      (recur  (get-overlay-node 
-                (-> current :next deref :id)) 
-             (inc hop)))
-      )
-    )
+      (do
+        (if (>= hop (get-number-of-devices))
+          (do
+            {:message 
+             (create-message "find-node" start-node-id 
+                             (-> current :node deref :id) 
+                             {:hops 20})
+             })
+          ;else
+          (recur  (get-overlay-node 
+                    (-> current :next deref :id)) 
+                 (inc hop)
+                 (create-message "find-node"
+                                 start-node-id 
+                                 (-> current :node deref :id)
+                                 {:hops hop}))
+          )
+
+        )
+      )))
+    
 
 (defn store [start-node-id k v]
   (println "storing " k "->" v ". Starting from " start-node-id)
+  (let [f (find-node start-node-id k)]
   (store-data 
     (:id 
-      (find-node start-node-id k)) k v)
-  )
+      (:node f)) k v)
+   {:message 
+    (:message f)}
+    ))
 
 (defn lookup [start-node-id k]
-  (get (get-data-in-node (:id (find-node start-node-id k)) k) :value)
-  )
+  (let [f (find-node start-node-id k)]
+    {:value
+      (get (get-data-in-node (:id (:node f)) :value))
+     :message
+      (:message f)}))
 
 (defn get-random-node []
   (deref (nth *nodelist* (-> (count @*nodelist*) rand int )
        ))
   )
 
-(defn get-number-of-devices []
-  (count @*nodelist*)
-  )
+
