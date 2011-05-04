@@ -10,7 +10,7 @@
          {
           :title "Simple DHT"
           :devices {:types ["phone-1"]
-                    :number 1e4
+                    :number 10
                     :sample 'random
                     }
           :area {:width 100 :height 100}
@@ -47,7 +47,7 @@
           (println "Hop Count Average" 
                    (/ (sum @hop-count-list) (get-total-samples)))
           ) )
-
+(show-nodes)
 (at 10
     (do
       (println "Storing datas")

@@ -1,6 +1,6 @@
 (ns thor.dht.simple 
   (:use thor.node thor.data-store thor.messages)
-  (:require thor.queue)
+  (:require thor.queue thor.ui.window)
   )
 (use '[clojure.contrib.math :only (expt)])
 
@@ -153,4 +153,6 @@
        ))
   )
 
-
+(defn show-nodes []
+  (thor.ui.window/init-window @*nodelist*)
+  )

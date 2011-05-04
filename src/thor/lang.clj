@@ -1,7 +1,11 @@
 (ns #^{:doc "A description parser for thor AKA Hammer"}
   thor.lang
   (:use clojure.contrib.logging thor.utils)
-  (:require thor.queue thor.node thor.net.wireless)
+  (:require 
+    thor.queue 
+    thor.node 
+    thor.net.wireless 
+    )
   )
 
 (use '[clojure.contrib.math :only (expt) ])
@@ -14,12 +18,13 @@
 (def *current-time* (atom 1))
 (def *keyspace* (atom (expt 2 32)))
 (def *simulation-running* (atom false))
-
+(def *nodelist* (atom ()))
 
 ; medium types  anything but 0
 (def wired 2)   ; magic number alert! ;)
 (def wireless 3)
 (def *network-type* (atom 0))
+
 
 (def *wireless-network*
   (atom {:bandwidth 10000 ; wonky magic numbers
@@ -255,6 +260,7 @@
 
 (defn end-simulation []
   (thor.queue/empty!)
+  (reset! *nodelist* () )
   (reset! *simulation-running* false)
   )
 
@@ -271,11 +277,17 @@
 (defn new-node [attrs]
 
   (if (contains? attrs :device)
-    (atom (thor.node/create-node 
+    (let [n (atom (thor.node/create-node 
             (assoc attrs :device-attrs 
                    (get-device 
-                     (attrs :device)))
-  ))))
+                     (attrs :device)))))]
+      (swap! *nodelist* conj n)
+      n
+  )))
+
+(defn draw-node []
+  
+  )
 
 (defn move-node [n op pos]
   (reset! n (thor.node/node-move @n op pos)))

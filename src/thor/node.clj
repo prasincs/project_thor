@@ -17,6 +17,7 @@
 (defn create-memory [size] 
   (struct-map mem :total size :free size))
 
+
 (defrecord Node 
   [id 
    memory
@@ -127,7 +128,7 @@
                            {:max-width 100
                             :max-height 100}}
                           & [ { :keys [id] :or 
-                               {id (-> 
+                               {:id (-> 
                                      (* max-width 
                                         max-height)
                                      rand int)}} 
@@ -230,13 +231,14 @@
   [num width height &[id-range] ]
   ; if an ID range is given, create nodes with ID in the range
   (debug "random node list")
+  (println "width->" width "height->" height)
   (let [nlist (atom ())]
     (if (nil? id-range)
       (dotimes [n num] 
         (swap! nlist 
                conj 
                  (create-random-node 
-                   width height { :id n }
+                   {:max-width width :max-height height} { :id n }
                    )))
 
       ; else

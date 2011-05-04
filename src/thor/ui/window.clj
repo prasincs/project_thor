@@ -1,5 +1,5 @@
 (ns thor.ui.window
-  (:require clojure.core thor.network))
+  (:require clojure.core))
 (import '(javax.swing JFrame JButton JPanel JOptionPane)
   '(java.awt.event ActionListener)
   '(java.awt Color Dimension GridLayout))          
@@ -11,7 +11,8 @@
     (.setColor g (Color. 0 0 0))
     (.fillOval g (get location :x) (get location :y) 15 15)
     )) 
- 
+
+
 (defn create-canvas [node-list]
   (proxy [JPanel] [] 
     (paintComponent [g]
@@ -22,7 +23,8 @@
     (getPreferredSize [] (Dimension. 500 500))))
 
 
-(def window (JFrame. "Project Thor"))
+(def window 
+  (JFrame. "Project Thor"))
  
 
 (defn init-window [ node-list ]
