@@ -5,6 +5,7 @@
     thor.queue 
     thor.node 
     thor.net.wireless 
+    thor.ui.node-viewer
     )
   )
 
@@ -35,6 +36,8 @@
          :noise 0
          })
   )
+
+
 
 (defn get-duration [] @*duration*)
 
@@ -285,9 +288,7 @@
       n
   )))
 
-(defn draw-node []
   
-  )
 
 (defn move-node [n op pos]
   (reset! n (thor.node/node-move @n op pos)))
@@ -301,3 +302,20 @@
   (-> n deref :device-attrs :battery :capacity)
   )
 
+(defn node-viewer-start [] 
+  (thor.ui.node-viewer/init-window)
+  )
+
+(defn deref-all [nodeslist]
+  (map deref nodeslist )
+  )
+
+(defn node-viewer-update-nodes [{:keys [time text] 
+                                 :or {
+                                   time (get-current-time) 
+                                  text ""}}]
+  (thor.ui.node-viewer/add-nodes time {:text ""
+                                       :nodes 
+                                       (deref-all 
+                                         @*nodelist*)})
+  )

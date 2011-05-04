@@ -90,7 +90,6 @@
     ; else -> must be a reference
     (do
       (let [device-attrs (-> @n :device-attrs)]
-        (println "time => " time)
         (swap! n 
                assoc :device-attrs 
                (assoc device-attrs 
@@ -148,14 +147,13 @@
   (n :location))
 
 (defn change-location [loc op pos]
-                 (println "Change Location")
-                 (println loc)
+                 ;(println "Change Location")
+                 ;(println loc)
                  (assoc pos :x (op (:x pos) (:x loc)  ) 
                         :y (op (:y pos) (:y loc))))
 
 (defn node-move [n op pos]
   (debug "Node Move")
-  (prn (:location n))
   (assoc n :location  (change-location (:location n) op pos))
   )    
 
@@ -230,8 +228,8 @@
 (defn create-seq-random-node-list 
   [num width height &[id-range] ]
   ; if an ID range is given, create nodes with ID in the range
-  (debug "random node list")
-  (println "width->" width "height->" height)
+  ;(debug "random node list")
+  ;(println "width->" width "height->" height)
   (let [nlist (atom ())]
     (if (nil? id-range)
       (dotimes [n num] 

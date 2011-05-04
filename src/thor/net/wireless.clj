@@ -34,29 +34,27 @@
 
 (defn get-wireless-attr [attr]
   (debug "Getting wireless attributes")
-  (println @*wireless-network-attrs*)
-  (println attr "->"
+  ;(println @*wireless-network-attrs*)
+  ;(println attr "->"
   (get @*wireless-network-attrs* attr))
-  (get @*wireless-network-attrs* attr)
-  )
 
 (defn get-wavelength 
   "Get the wavelength from given frequency in Hz" 
   [freq]  
-  (println "Getting wavelength")
-  (println freq)
+; (println "Getting wavelength")
+;  (println freq)
   (/ SPEED_LIGHT freq))
 
 ; for free space propagation loss exponent is 2 anyways
 (defn friis-power-received [{:keys [freq distance 
                                     power-t gain-t gain-r propagation-loss-expt] 
                              :or {propagation-loss-expt 2}}]  
-  (debug "Friis power received calculation")
-  (println "distance ->" distance)
-  (println "freq ->" freq)
-  (println "power-t ->" power-t)
-  (println "gain-t ->" gain-t)
-  (println "gain-r ->" gain-r)
+;  (debug "Friis power received calculation")
+;  (println "distance ->" distance)
+;  (println "freq ->" freq)
+;  (println "power-t ->" power-t)
+;  (println "gain-t ->" gain-t)
+;  (println "gain-r ->" gain-r)
   (* 
     (expt 
       (/ (get-wavelength freq)      

@@ -14,38 +14,26 @@
     ))
 
 (def radius 100)
-(def textValue (atom 0))
+(def textValue (atom ""))
 (def nodelist (atom ()))
 
 ; keep a record of states to replay later
 (def states (atom {})) 
 
 (def statesListModel (DefaultListModel.))
-(def statesList (let [stateList (doto (JList. 
+(def stateList (doto (JList. 
                   statesListModel)
                    (.setSelectionMode ListSelectionModel/SINGLE_SELECTION)
                    (.setFixedCellWidth 200)
                                                      
                                   )
-                      ]
-                 (doto stateList
-                   
-                   (.addListSelectionListener 
-                     (proxy [ListSelectionListener] [] 
-        
-                       (valueChanged [evt]
-                                     (let [selected (.getSelectedValue stateList)]
-                                       (println "selected " selected )
-                                       (apply-state selected)
-                                       )
-                                     )
-                       )
-                     )
-
-                   )
-
-                 (JScrollPane. stateList ScrollPaneConstants/VERTICAL_SCROLLBAR_ALWAYS ScrollPaneConstants/HORIZONTAL_SCROLLBAR_AS_NEEDED 
-                  )))
+)
+(def statesListScrollPane 
+                 (JScrollPane. 
+                   stateList 
+                   ScrollPaneConstants/VERTICAL_SCROLLBAR_ALWAYS 
+                   ScrollPaneConstants/HORIZONTAL_SCROLLBAR_AS_NEEDED 
+                  ))
 
 (defn add-states-to-list [model elements]
   (doseq [elem elements]
@@ -72,7 +60,7 @@
                   (smooth)
                   (fill 0)
                   
-                  (text (format "Test:%d" @textValue) 0 16 ))
+                  (text @textValue 0 16 ))
                   
                   (doseq [n @nodelist]
                     (let [loc (-> n :location)]      
@@ -83,7 +71,8 @@
                       ;(println loc)
                     (ellipse (:x loc) (:y loc) radius radius)
                         (fill 0)
-                        (text (format "Node %d" (:id n)) (:x loc) (:y loc))
+                        (text (format "(%d, %d)" (:x loc) (:y loc)) (:x loc) (:y loc))
+                        ;(text (format "Node %d" (:id n)) (:x loc) (:y loc))
                     ))
                   
                   )))
@@ -93,6 +82,13 @@
   
 (def sktch (get-sketch))
 
+(defn apply-state [time]
+  (let [state (get @states time)]
+    (reset! textValue (:textValue state))
+    (reset! nodelist (:nodelist state))
+  ))
+
+
 (defn init-window []
     
       (doto frame 
@@ -101,20 +97,30 @@
                            BoxLayout/X_AXIS
                            ))
         (.add sktch)
-        (.add statesList)
+        (.add statesListScrollPane)
         (.setVisible true)
+
         )
+        (doto stateList
+                   
+                   (.addListSelectionListener 
+                     (proxy [ListSelectionListener] [] 
+        
+                       (valueChanged [evt]
+                                     (let [selected (.getSelectedValue stateList)]
+                                       ;(println "selected " selected )
+                                       (apply-state selected)
+                                       )
+                                     )
+                       )
+                     )
+
+                   )
     (.init sktch)
   )
 
-(defn apply-state [time]
-  (let [state (get @states time)]
-    (reset! textValue (:textValue state))
-    (reset! nodelist (:nodelist state))
-  ))
-
 (defn set-state [time {:keys [t nodes]}]
-  (println "set-state")
+  ;(println "set-state")
   (swap! states assoc time 
          {:textValue t
           :nodelist nodes
@@ -127,7 +133,9 @@
   )
 
 (defn add-nodes [time {:keys [text nodes]}]
-  (println nodes)
+  (. Thread (sleep 200))
+  ;(println nodes)
+
   (set-state time
     {:t text
      :nodes nodes})

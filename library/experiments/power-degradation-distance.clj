@@ -4,7 +4,7 @@
      'thor.node
     '(incanter core charts stats) 
      :reload-all)
-(defduration 1000)
+(defduration 100)
 
 (defdevice "phone-1" {
                     :type "phone"
@@ -61,23 +61,24 @@
 
 (def transmitter (new-node 
                    {:device "phone-1" 
-                    :location {:x 50 :y 0}} ; start at very top
+                    :location {:x 250 :y 10}} ; start at very top
                    ))
 
 (def receiver (new-node 
                 {:device "phone-1"
-                 :location {:x 50 :y 1}}
+                 :location {:x 250 :y 11}}
                 )) ; start at distance 1 away from transmitter
 
 (def power-loss-time (atom ()))
 (def distances (atom ()))
 (def battery-capacity-list (atom ()))
 (at-start (do 
+            (node-viewer-start)
                  ))
 
 (at-end (do 
-          (println "Results" )
-          (println @power-loss-time)
+          ;(println "Results" )
+          ;(println @power-loss-time)
           (let [ distance (reverse
                             @distances)
                 power (reverse 
@@ -107,8 +108,9 @@
         )
 
 
-(every 10 (do
+(every 1 (do
            (move-node receiver + {:x 0 :y 1})
+           (println (get-current-time) (:location @receiver))
            (swap! distances conj 
                   (get-distance-between-nodes
                     transmitter receiver))
@@ -120,7 +122,7 @@
            (swap! battery-capacity-list conj 
                   (get-battery-capacity receiver)
                   )
-           (println (get-battery-capacity receiver))
+           ;(println (get-battery-capacity receiver))
            (swap! power-loss-time conj 
                   (:power-received 
                     (get-message-network-attrs 
@@ -130,6 +132,7 @@
                         receiver 
                         {:time (get-current-time)})
                       )))
+            (node-viewer-update-nodes {:text "Test"})
            ))
 
 (simulation-run)
