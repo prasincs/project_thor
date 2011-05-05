@@ -60,13 +60,15 @@
 
 
 (def transmitter (new-node 
-                   {:device "phone-1" 
-                    :location {:x 250 :y 10}} ; start at very top
+                   {:name "transmitter"
+                    :device "phone-1" 
+                    :location {:x 250 :y 50}} ; start at very top
                    ))
 
 (def receiver (new-node 
-                {:device "phone-1"
-                 :location {:x 250 :y 11}}
+                {:name "receiver"
+                 :device "phone-1"
+                 :location {:x 250 :y 51}}
                 )) ; start at distance 1 away from transmitter
 
 (def power-loss-time (atom ()))
@@ -123,16 +125,23 @@
                   (get-battery-capacity receiver)
                   )
            ;(println (get-battery-capacity receiver))
-           (swap! power-loss-time conj 
-                  (:power-received 
+           ( let [power-received  (:power-received 
                     (get-message-network-attrs 
                       (send-network-message 
                         "test" 
                         transmitter 
                         receiver 
                         {:time (get-current-time)})
-                      )))
-            (node-viewer-update-nodes {:text "Test"})
-           ))
+                      ))]
+           (swap! power-loss-time conj 
+                  power-received )
+            (node-viewer-update-nodes {:text 
+                                       (format 
+                                         "Distance:%f\nPower Received: %f\nBattery Capacity:%f" 
+                                         (get-distance-between-nodes transmitter receiver)
+                                         power-received 
+                                         (get-battery-capacity receiver) )
+                                       })
+           )))
 
 (simulation-run)

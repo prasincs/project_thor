@@ -314,7 +314,7 @@
                                  :or {
                                    time (get-current-time) 
                                   text ""}}]
-  (thor.ui.node-viewer/add-nodes time {:text ""
+  (thor.ui.node-viewer/add-nodes time {:text text
                                        :nodes 
                                        (deref-all 
                                          @*nodelist*)})

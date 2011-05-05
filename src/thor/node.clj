@@ -19,7 +19,8 @@
 
 
 (defrecord Node 
-  [id 
+  [id
+   name
    memory
    location  ; x y coordinate in graph pos type
    speed
@@ -33,9 +34,10 @@
   )
 
 (defn create-node "create a node based on given info"
-  [{:keys [id location memory-size device-attrs network-attrs ] :or {:device-attrs {} :network-attrs {}}} ]
+  [{:keys [id name location memory-size device-attrs network-attrs ] :or { :device-attrs {} :network-attrs {}}} ]
   (Node.  
     id 
+    name
     (create-memory memory-size)
     location
     0

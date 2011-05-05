@@ -1,6 +1,6 @@
 (ns 
   thor.ui.node-viewer
-  (:import [javax.swing JFrame JList JButton BoxLayout JPanel DefaultListModel BoxLayout ListSelectionModel JScrollPane ScrollPaneConstants ]
+  (:import [javax.swing JFrame JList JButton BoxLayout JPanel DefaultListModel BoxLayout ListSelectionModel JScrollPane JViewport JLabel ScrollPaneConstants ]
            [java.awt Dimension GridBagLayout BorderLayout]
   
            [javax.swing.event ListSelectionListener]
@@ -10,7 +10,7 @@
 (def frame 
   (doto (JFrame. "Project Thor")
     (.setDefaultCloseOperation (JFrame/EXIT_ON_CLOSE))
-    (.setSize (Dimension. 500 500))
+    (.setSize (Dimension. 700 500))
     ))
 
 (def radius 100)
@@ -29,11 +29,20 @@
                                   )
 )
 (def statesListScrollPane 
+                (let [header 
+                      (doto 
+                      (JViewport. )
+                        (.setView 
+                          (JLabel. "Time"))
+                        )]
+                (doto 
                  (JScrollPane. 
                    stateList 
                    ScrollPaneConstants/VERTICAL_SCROLLBAR_ALWAYS 
                    ScrollPaneConstants/HORIZONTAL_SCROLLBAR_AS_NEEDED 
-                  ))
+                  )
+                  (.setColumnHeader header)
+                  )))
 
 (defn add-states-to-list [model elements]
   (doseq [elem elements]
@@ -70,8 +79,12 @@
                       (fill 64 187 128 100)
                       ;(println loc)
                     (ellipse (:x loc) (:y loc) radius radius)
-                        (fill 0)
-                        (text (format "(%d, %d)" (:x loc) (:y loc)) (:x loc) (:y loc))
+                        (fill 250 79 45)
+                        (text (if (nil? (:name n)) 
+                                        (format "Node %d" (:id n))
+                                (:name n)
+                                ) (:x loc) (:y loc))
+                        ;(text (format "(%d, %d)" (:x loc) (:y loc)) (:x loc) (:y loc))
                         ;(text (format "Node %d" (:id n)) (:x loc) (:y loc))
                     ))
                   
