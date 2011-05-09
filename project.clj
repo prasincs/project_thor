@@ -7,7 +7,14 @@
                                               javax.jms/jms
                                               com.sun.jdmk/jmxtools
                                               com.sun.jmx/jmxri]]]
-  :dev-dependencies [[swank-clojure "1.2.1"]]
-  ; sets the 'java.library.path' property to load ZeroMQ library
+  :dev-dependencies [[com.fxtlabs/autodoc "0.8.0-SNAPSHOT"]
+                     [swank-clojure "1.2.1"]
+                     ]
+  :autodoc {:name "Project Thor" 
+            :page-title "API documentation"
+            :web-home "http://prasincs.github.com/project_thor/docs"
+            :output-path "docs"
+            }
+  ; sets the 'java.li:brary.path' property to load ZeroMQ library
   :native-path "/usr/local/lib"
   :main thor.main)
