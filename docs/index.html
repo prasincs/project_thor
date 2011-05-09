@@ -1,0 +1,447 @@
+<html>
+  <head>
+    <title>Overview - Project Thor nil API documentation</title>
+    <link href="static/favicon.png" rel="icon" />
+    <link href="static/favicon.png" rel="shortcut icon" />
+    <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
+    <link media="all" type="text/css" href="static/wiki.css" rel="stylesheet" />
+    <link media="all" type="text/css" href="static/internal.css" rel="stylesheet" />
+    <style>.menuWrapper{height: 36px;}</style>
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" href="http://www.wikispaces.com/_/2009051601/s/internal_ie.css" type="text/css" />
+    <![endif]-->
+  </head>
+<!--
+This document was auto-generated from the source by the clojure autodoc system.
+To report errors or ask questions about the overall documentation structure, formatting,
+etc., contact Tom Faulhaber (google mail name: tomfaulhaber).
+For errors in the documentation of a particular namespace, contact the author of that
+namespace.
+-->
+  <body>
+    <div id="AllContentContainer">
+      <div id="Header">
+	<a id="Logo" href="index.html"><img alt="Clojure" height="100" width="100" src="static/clojure-icon.gif" /></a>
+	<h1><a title="page header title" id="page-header" href="index.html">API documentation</a></h1>
+      </div>
+      <div id="leftcolumn"><div style="text-align: center;"></div>
+<div class="menu">
+  <div class="WikiCustomNav WikiElement wiki">
+    <span class="toc-header"><span id="project-name">Project Thor</span> <span id="version"></span> API</span><br />
+    <ul>
+      <li><a class="wiki_link" href="index.html">Overview</a></li>
+      <li><a class="wiki_link" href="api-index.html">API Index</a></li>
+    </ul>
+    <span class="toc-header">Namespaces</span>
+    <ul id="left-sidebar-list">
+      <li><a href="thor.analytics.experiment-api.html" class="wiki_link">thor.analytics.experiment</a></li><li><a href="thor.core-api.html" class="wiki_link">thor.core</a></li><li><a href="thor.data-store-api.html" class="wiki_link">thor.data-store</a></li><li><a href="thor.demo-api.html" class="wiki_link">thor.demo</a></li><li><a href="thor.dht.aodv-api.html" class="wiki_link">thor.dht.aodv</a></li><li><a href="thor.dht.simple-api.html" class="wiki_link">thor.dht.simple</a></li><li><a href="thor.graph-api.html" class="wiki_link">thor.graph</a></li><li><a href="thor.lang-api.html" class="wiki_link">thor.lang</a></li><li><a href="thor.main-api.html" class="wiki_link">thor.main</a></li><li><a href="thor.math-api.html" class="wiki_link">thor.math</a></li><li><a href="thor.messages-api.html" class="wiki_link">thor.messages</a></li><li><a href="thor.net.wireless-api.html" class="wiki_link">thor.net.wireless</a></li><li><a href="thor.network-api.html" class="wiki_link">thor.network</a></li><li><a href="thor.node-api.html" class="wiki_link">thor.node</a></li><li><a href="thor.queue-api.html" class="wiki_link">thor.queue</a></li><li><a href="thor.ui.analytics-api.html" class="wiki_link">thor.ui.analytics</a></li><li><a href="thor.ui.animation-api.html" class="wiki_link">thor.ui.animation</a></li><li><a href="thor.ui.node-viewer-api.html" class="wiki_link">thor.ui.node-viewer</a></li><li><a href="thor.ui.processing-test-api.html" class="wiki_link">thor.ui.processing-test</a></li><li><a href="thor.ui.window-api.html" class="wiki_link">thor.ui.window</a></li><li><a href="thor.utils-api.html" class="wiki_link">thor.utils</a></li><li><a href="thor.window-api.html" class="wiki_link">thor.window</a></li>
+    </ul>
+    
+    <a href="http://clojure.org" class="wiki_link">Clojure Home</a>
+  </div>
+</div>
+</div>
+      <div id="rightcolumn">
+	<div id="Content">
+	  <div class="contentBox"><div class="innerContentBox">
+              <div id="content_view" class="wiki wikiPage">
+                <div id="right-sidebar"><div id="toc">
+  <h1 class="nopad">Table of Contents</h1>
+  <div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.analytics.experiment">thor.analytics.experiment</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.core">thor.core</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.data-store">thor.data-store</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.demo">thor.demo</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.dht.aodv">thor.dht.aodv</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.dht.simple">thor.dht.simple</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.graph">thor.graph</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.lang">thor.lang</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.main">thor.main</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.math">thor.math</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.messages">thor.messages</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.net.wireless">thor.net.wireless</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.network">thor.network</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.node">thor.node</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.queue">thor.queue</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.ui.analytics">thor.ui.analytics</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.ui.animation">thor.ui.animation</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.ui.node-viewer">thor.ui.node-viewer</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.ui.processing-test">thor.ui.processing-test</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.ui.window">thor.ui.window</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.utils">thor.utils</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#thor.window">thor.window</a>
+    
+    <br />
+  </div>
+</div>
+</div>
+                <div id="content-tag"><h1 id="toc0">API Overview - <span id="header-project">Project Thor</span> <span id="header-version"></span> (<span id="header-status"></span>)</h1>
+<br />
+<div id="project-description">FIXME: write</div>
+<br />
+<div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.analytics.experiment">thor.analytics.experiment</h2>
+  
+  <a href="thor.analytics.experiment-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.core">thor.core</h2>
+  
+  <a href="thor.core-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.data-store">thor.data-store</h2>
+  
+  <a href="thor.data-store-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.demo">thor.demo</h2>
+  
+  <a href="thor.demo-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.dht.aodv">thor.dht.aodv</h2>
+  
+  <a href="thor.dht.aodv-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr">AODV implementation</pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.dht.simple">thor.dht.simple</h2>
+  
+  <a href="thor.dht.simple-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.graph">thor.graph</h2>
+  
+  <a href="thor.graph-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.lang">thor.lang</h2>
+  
+  <a href="thor.lang-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr">A description parser for thor AKA Hammer</pre>
+  
+  
+  
+  Public variables and functions:
+  <span id="var-link"><a href="thor.lang-api.html#thor.lang/at-end" id="var-tag">at-end</a> </span><span id="var-link"><a href="thor.lang-api.html#thor.lang/create-experiment" id="var-tag">create-experiment</a> </span><span id="var-link"><a href="thor.lang-api.html#thor.lang/defdevice" id="var-tag">defdevice</a> </span><span id="var-link"><a href="thor.lang-api.html#thor.lang/defexpt" id="var-tag">defexpt</a> </span><span id="var-link"><a href="thor.lang-api.html#thor.lang/defmedium" id="var-tag">defmedium</a> </span><span id="var-link"><a href="thor.lang-api.html#thor.lang/init-wireless-network" id="var-tag">init-wireless-network</a> </span><span id="var-link"><a href="thor.lang-api.html#thor.lang/load-device" id="var-tag">load-device</a> </span><span id="var-link"><a href="thor.lang-api.html#thor.lang/load-experiment" id="var-tag">load-experiment</a> </span><br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.main">thor.main</h2>
+  
+  <a href="thor.main-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.math">thor.math</h2>
+  
+  <a href="thor.math-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.messages">thor.messages</h2>
+  
+  <a href="thor.messages-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <span id="var-link"><a href="thor.messages-api.html#thor.messages/build-message-attrs" id="var-tag">build-message-attrs</a> </span><br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.net.wireless">thor.net.wireless</h2>
+  
+  <a href="thor.net.wireless-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <span id="var-link"><a href="thor.net.wireless-api.html#thor.net.wireless/calculate-network-attrs" id="var-tag">calculate-network-attrs</a> </span><span id="var-link"><a href="thor.net.wireless-api.html#thor.net.wireless/get-wavelength" id="var-tag">get-wavelength</a> </span><span id="var-link"><a href="thor.net.wireless-api.html#thor.net.wireless/send-network-message" id="var-tag">send-network-message</a> </span><br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.network">thor.network</h2>
+  
+  <a href="thor.network-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.node">thor.node</h2>
+  
+  <a href="thor.node-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr">The node class used for defining various nodes in the network</pre>
+  
+  
+  
+  Public variables and functions:
+  <span id="var-link"><a href="thor.node-api.html#thor.node/create-node" id="var-tag">create-node</a> </span><br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.queue">thor.queue</h2>
+  
+  <a href="thor.queue-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <span id="var-link"><a href="thor.queue-api.html#thor.queue/create-random-queue" id="var-tag">create-random-queue</a> </span><br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.ui.analytics">thor.ui.analytics</h2>
+  
+  <a href="thor.ui.analytics-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.ui.animation">thor.ui.animation</h2>
+  
+  <a href="thor.ui.animation-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.ui.node-viewer">thor.ui.node-viewer</h2>
+  
+  <a href="thor.ui.node-viewer-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.ui.processing-test">thor.ui.processing-test</h2>
+  
+  <a href="thor.ui.processing-test-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.ui.window">thor.ui.window</h2>
+  
+  <a href="thor.ui.window-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.utils">thor.utils</h2>
+  
+  <a href="thor.utils-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr"></pre>
+  
+  
+  
+  Public variables and functions:
+  <span id="var-link"><a href="thor.utils-api.html#thor.utils/in-seq?" id="var-tag">in-seq?</a> </span><br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="thor.window">thor.window</h2>
+  
+  <a href="thor.window-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr">A placeholder file for now - creates a window and draws nodes</pre>
+  
+  
+  
+  Public variables and functions:
+  <br />
+  
+</div>
+</div>
+              </div>
+            </div>
+          </div>
+	</div>
+	<div id="foot">
+	  <div style="text-align: center;" id="copyright">No copyright info </div>
+	</div>
+      </div>
+      <div id="DesignedBy">Logo &amp; site design by <a title="Visit Tom Hickey's website." href="http://www.tomhickey.com">Tom Hickey</a>.<br />
+      Clojure auto-documentation system by Tom Faulhaber.</div>
+    </div>
+    <!-- /AllContentContainer -->
+  </body>
+
+</html>
