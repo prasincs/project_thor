@@ -7,11 +7,19 @@
 
 ; 
 (def INFINITY (Integer/MAX_VALUE))
-(defstruct pos :x :y )
-(defstruct mem :total :free)
-(defstruct data :size :content)
+(defstruct pos 
+           "Position variable contains {:x :y }"
+           :x :y )
+(defstruct mem 
+           "Memory definition {:total :free}"
+           :total :free)
+(defstruct data 
+           "Data type {:size :content}"
+           :size :content)
 
-(defn create-data [size content]
+(defn create-data 
+  "Create data of certain size and content"
+  [size content]
   (struct-map data :size size :content content))
 
 (defn create-memory [size] 
@@ -19,6 +27,7 @@
 
 
 (defrecord Node 
+  "Node data structure"
   [id
    name
    memory
