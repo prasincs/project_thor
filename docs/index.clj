@@ -112,103 +112,7 @@
    :doc
    "A placeholder file for now - creates a window and draws nodes"}),
  :vars
- ({:arglists ([f]),
-   :name "at-end",
-   :namespace "thor.lang",
-   :source-url nil,
-   :raw-source-url nil,
-   :wiki-url
-   "http://prasincs.github.com/project_thor/docs/thor.lang-api.html#thor.lang/at-end",
-   :doc "A special at function that just runs at the end",
-   :var-type "macro",
-   :line 182,
-   :file
-   "/home/pgautam/workspace/project_thor_gh_pages/src/thor/lang.clj"}
-  {:arglists ([n attrs]),
-   :name "create-experiment",
-   :namespace "thor.lang",
-   :source-url nil,
-   :raw-source-url nil,
-   :wiki-url
-   "http://prasincs.github.com/project_thor/docs/thor.lang-api.html#thor.lang/create-experiment",
-   :doc "Create an experiment based on attributes",
-   :var-type "function",
-   :line 130,
-   :file
-   "/home/pgautam/workspace/project_thor_gh_pages/src/thor/lang.clj"}
-  {:arglists ([n attrs]),
-   :name "defdevice",
-   :namespace "thor.lang",
-   :source-url nil,
-   :raw-source-url nil,
-   :wiki-url
-   "http://prasincs.github.com/project_thor/docs/thor.lang-api.html#thor.lang/defdevice",
-   :doc "Defines a device with name and a map of attributes",
-   :var-type "macro",
-   :line 117,
-   :file
-   "/home/pgautam/workspace/project_thor_gh_pages/src/thor/lang.clj"}
-  {:arglists ([n attrs]),
-   :name "defexpt",
-   :namespace "thor.lang",
-   :source-url nil,
-   :raw-source-url nil,
-   :wiki-url
-   "http://prasincs.github.com/project_thor/docs/thor.lang-api.html#thor.lang/defexpt",
-   :doc "Defines an experiment",
-   :var-type "macro",
-   :line 198,
-   :file
-   "/home/pgautam/workspace/project_thor_gh_pages/src/thor/lang.clj"}
-  {:arglists ([t attrs]),
-   :name "defmedium",
-   :namespace "thor.lang",
-   :source-url nil,
-   :raw-source-url nil,
-   :wiki-url
-   "http://prasincs.github.com/project_thor/docs/thor.lang-api.html#thor.lang/defmedium",
-   :doc "Defines the properties of the medium of communication",
-   :var-type "macro",
-   :line 93,
-   :file
-   "/home/pgautam/workspace/project_thor_gh_pages/src/thor/lang.clj"}
-  {:arglists ([attrs]),
-   :name "init-wireless-network",
-   :namespace "thor.lang",
-   :source-url nil,
-   :raw-source-url nil,
-   :wiki-url
-   "http://prasincs.github.com/project_thor/docs/thor.lang-api.html#thor.lang/init-wireless-network",
-   :doc "Apply the attributes from the map",
-   :var-type "function",
-   :line 56,
-   :file
-   "/home/pgautam/workspace/project_thor_gh_pages/src/thor/lang.clj"}
-  {:arglists ([f]),
-   :name "load-device",
-   :namespace "thor.lang",
-   :source-url nil,
-   :raw-source-url nil,
-   :wiki-url
-   "http://prasincs.github.com/project_thor/docs/thor.lang-api.html#thor.lang/load-device",
-   :doc "Loads a device from file f.",
-   :var-type "function",
-   :line 227,
-   :file
-   "/home/pgautam/workspace/project_thor_gh_pages/src/thor/lang.clj"}
-  {:arglists ([f]),
-   :name "load-experiment",
-   :namespace "thor.lang",
-   :source-url nil,
-   :raw-source-url nil,
-   :wiki-url
-   "http://prasincs.github.com/project_thor/docs/thor.lang-api.html#thor.lang/load-experiment",
-   :doc "Load experiment data from file f",
-   :var-type "function",
-   :line 214,
-   :file
-   "/home/pgautam/workspace/project_thor_gh_pages/src/thor/lang.clj"}
-  {:arglists ([from to attrs]),
+ ({:arglists ([from to attrs]),
    :name "build-message-attrs",
    :namespace "thor.messages",
    :source-url nil,
@@ -221,55 +125,16 @@
    :line 32,
    :file
    "/home/pgautam/workspace/project_thor_gh_pages/src/thor/messages.clj"}
-  {:arglists ([from to]),
-   :name "calculate-network-attrs",
-   :namespace "thor.net.wireless",
-   :source-url nil,
-   :raw-source-url nil,
-   :wiki-url
-   "http://prasincs.github.com/project_thor/docs/thor.net.wireless-api.html#thor.net.wireless/calculate-network-attrs",
-   :doc
-   "Calculate the network parameters we'll see if a message \nof certain size were to be sent from point A to point B",
-   :var-type "function",
-   :line 66,
-   :file
-   "/home/pgautam/workspace/project_thor_gh_pages/src/thor/net/wireless.clj"}
-  {:arglists ([freq]),
-   :name "get-wavelength",
-   :namespace "thor.net.wireless",
-   :source-url nil,
-   :raw-source-url nil,
-   :wiki-url
-   "http://prasincs.github.com/project_thor/docs/thor.net.wireless-api.html#thor.net.wireless/get-wavelength",
-   :doc "Get the wavelength from given frequency in Hz",
-   :var-type "function",
-   :line 41,
-   :file
-   "/home/pgautam/workspace/project_thor_gh_pages/src/thor/net/wireless.clj"}
-  {:arglists ([message from to & [attrs]]),
-   :name "send-network-message",
-   :namespace "thor.net.wireless",
-   :source-url nil,
-   :raw-source-url nil,
-   :wiki-url
-   "http://prasincs.github.com/project_thor/docs/thor.net.wireless-api.html#thor.net.wireless/send-network-message",
-   :doc "Send a network message from a node to other",
-   :var-type "function",
-   :line 102,
-   :file
-   "/home/pgautam/workspace/project_thor_gh_pages/src/thor/net/wireless.clj"}
-  {:arglists
-   ([{:keys [id name location memory-size device-attrs network-attrs],
-      :or {:device-attrs {}, :network-attrs {}}}]),
-   :name "create-node",
+  {:arglists ([size content]),
+   :name "create-data",
    :namespace "thor.node",
    :source-url nil,
    :raw-source-url nil,
    :wiki-url
-   "http://prasincs.github.com/project_thor/docs/thor.node-api.html#thor.node/create-node",
-   :doc "create a node based on given info",
+   "http://prasincs.github.com/project_thor/docs/thor.node-api.html#thor.node/create-data",
+   :doc "Create data of certain size and content",
    :var-type "function",
-   :line 36,
+   :line 20,
    :file
    "/home/pgautam/workspace/project_thor_gh_pages/src/thor/node.clj"}
   {:arglists ([s]),
